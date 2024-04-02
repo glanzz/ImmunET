@@ -1,6 +1,5 @@
 # ImmunET
 Final Project for CSYE 6200 - Immunization Record Application
-
 ## Models
 ```mermaid
   classDiagram
@@ -161,6 +160,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     Vaccine --> Species
     ShotFactory..SingleShotRecord
     ShotFactory..MultiShotRecord
+    VaccineFactory..Vaccine
 
 ```
 
