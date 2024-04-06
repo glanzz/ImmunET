@@ -8,7 +8,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     class ShotRecord {
       <<abstract>>
       + abstract boolean isComplete()
-      + abstract List<ShotDAO> getShotDAO()
+      + abstract List<ShotDTO> getShotDTO()
       - abstract void generateSchedule()
     }
     class VaccineFactory {
@@ -64,7 +64,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       + static getByScheduleId(int scheduleID) ShotRecord
 
       + boolean isComplete()
-      + List<ShotDAO> getShotDAO()
+      + List<ShotDTO> getShotDTO()
       - void generateSchedule()
     }
 
@@ -76,7 +76,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       + static getByScheduleId(int scheduleID) ShotRecord
 
       + boolean isComplete()
-      + List<ShotDAO> getShotDAO()
+      + List<ShotDTO> getShotDTO()
       - void generateSchedule()
     }
     class Gender {
@@ -242,30 +242,30 @@ Final Project for CSYE 6200 - Immunization Record Application
 ## DTO
 ```mermaid
   classDiagram
-  class DoctorDAO {
+  class DoctorDTO {
       - int id 
       - String name
     }
-    class ScheduleDAO {
+    class ScheduleDTO {
       - Date scheduled_date
       - Date administered_date
       - String status 
-      - DoctorDAO doctor 
+      - DoctorDTO doctor 
     }
-    class ShotDAO {
+    class ShotDTO {
       - String name
-      - List<ScheduleDAO> shot_schedule
+      - List<ScheduleDTO> shot_schedule
     }
 
-    class PetDAO {
+    class PetDTO {
       - String name
       - int id
       - Date dob
       - String gender
     }
-    class ImmunizationReportDAO {
-      - List<ShotDAO> shots
-      - PetDAO pet
+    class ImmunizationReportDTO {
+      - List<ShotDTO> shots
+      - PetDTO pet
     }
     class TaxDTO {
       - float tax_rate
