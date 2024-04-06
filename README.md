@@ -9,11 +9,11 @@ Final Project for CSYE 6200 - Immunization Record Application
       <<abstract>>
       + abstract boolean isComplete()
       + abstract List<ShotDTO> getShotDTO()
-      - abstract void generateSchedule()
+      + abstract void generateSchedule()
     }
     class VaccineFactory {
-      + VaccineFactory getInstance()
-      + Vaccine getVaccine(String name, int frequency, String intervalsCSV, int offset)
+      + getInstance() VaccineFactory
+      + getVaccine(String name, int frequency, String intervalsCSV, int offset) Vaccine
     }
 
     class ShotFactory {
@@ -30,7 +30,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       - Species species
       - float cost
       + isDefault() boolean
-      + Vaccine(String name, int frequency, String intervalsCSV, int offset, Species s, Boolean default) void
+      + Vaccine(String name, int frequency, String intervalsCSV, int offset, Species s, Boolean default) Vaccine
       + static parseIntervals(String intervalsCSV) Integer[]
       + getShotRecord(Date dob) ShotRecord
       + save() void
@@ -48,36 +48,36 @@ Final Project for CSYE 6200 - Immunization Record Application
       - Date scheduledDate
       - Date administeredDate
       - ImmunizationStatus status
-      + void isDelayed()
-      + void isComplete()
-      + void markComplete(Doctor d)
-      + void setScheduledDate(Date date)
-      + void setAdministeredDate(Date date)
-      - void save()
+      + isDelayed() boolean
+      + isComplete() boolean
+      + markComplete(Doctor d) void
+      + setScheduledDate(Date date) void
+      + setAdministeredDate(Date date) void
+      - save() void
     }
 
     class SingleShotRecord {
       - Vaccine vaccine
       - Schedule schedule
-      + void SingleShotRecord(Vaccine v)
+      + SingleShotRecord(Vaccine v) SingleShotRecord
       + markComplete(Doctor signedDoctor) void
       + static getByScheduleId(int scheduleID) ShotRecord
 
-      + boolean isComplete()
-      + List<ShotDTO> getShotDTO()
-      - void generateSchedule()
+      + isComplete() boolean
+      + getShotDTO() List<ShotDTO>
+      - generateSchedule() void 
     }
 
     class MultiShotRecord {
       - Vaccine vaccine
       - List<Schedule> schedules
-      + void MultiShotRecord(Vaccine v)
-      + void markComplete(int scheduleID, Doctor signedDoctor)
+      + MultiShotRecord(Vaccine v) MultiShotRecord
+      + markComplete(int scheduleID, Doctor signedDoctor) void
       + static getByScheduleId(int scheduleID) ShotRecord
 
-      + boolean isComplete()
-      + List<ShotDTO> getShotDTO()
-      - void generateSchedule()
+      + isComplete() boolean
+      + getShotDTO() List<ShotDTO>
+      - generateSchedule() void
     }
     class Gender {
       <<enumeration>>
@@ -91,14 +91,14 @@ Final Project for CSYE 6200 - Immunization Record Application
       FELINE
       AVIAN
     }
-
+    note for Pet "getShotRecords() Gives list of shot record or empty if pet immunization record already exists"
     class Pet {
       - int id
       - String name
       - Date dob
       - Gender gender
       - Species s
-      + Pet(String name, Date dob, Gender gender, Species s) void
+      + Pet(String name, Date dob, Gender gender, Species s) Pet
       + save() void
       + getShotRecords() List<ShotRecord>
     }
@@ -115,7 +115,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     class ImmunizationReport {
       - List<ShotRecord> immunizationRecords
       - Pet pet
-      + ImmunizationReport(Pet p) void
+      + ImmunizationReport(Pet p) ImmunizationReport
       - load(Pet p) void
       + create() void
       + addShotRecord(Vaccine v) void
@@ -129,23 +129,33 @@ Final Project for CSYE 6200 - Immunization Record Application
     }
 
     class User {
-      String username
-      String password
-      String billing_address
+      # String username
+      # String password
+      # String billing_address
     }
 
     class Person {
-      String name
-      String address
-      Date dob
+      # String name
+      # String address
+      # Date dob
     }
 
     class Owner {
+      # String name
+      # String address
+      # Date dob
+      + Owner(name, dob, address) Owner
       + getPets() List<Pet>
     }
 
 
     class Doctor {
+      # String name
+      # String address
+      # Date dob
+      # String username
+      # String password
+      # String billing_address
       - String clinic_address
       - float service_cost
     }
@@ -215,17 +225,16 @@ Final Project for CSYE 6200 - Immunization Record Application
     Schedule --> ImmunizationStatus
     Pet --> Gender
     Pet --> Species
-    Vaccine --> Species
+    Vaccine --> Species: Association
     ShotFactory..SingleShotRecord
     ShotFactory..MultiShotRecord
     VaccineFactory..Vaccine
     BillItemFactory..BillItem
-    Bill *-- BillItem : Composition
     BillItemType --> BillItem
     BillFactory --> BillType
     Bill --> BillStatus
     BillFactory..Bill
-    Bill *-- BillItem : Composition
+    BillItem *-- Bill : Composition
     
 ```
 
