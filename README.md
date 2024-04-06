@@ -239,7 +239,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     }
 ```
 
-## DAO
+## DTO
 ```mermaid
   classDiagram
   class DoctorDAO {
@@ -247,14 +247,14 @@ Final Project for CSYE 6200 - Immunization Record Application
       - String name
     }
     class ScheduleDAO {
-      - Date scheduledDate
-      - Date administeredDate
+      - Date scheduled_date
+      - Date administered_date
       - String status 
       - DoctorDAO doctor 
     }
     class ShotDAO {
       - String name
-      - List<ScheduleDAO> shotSchedule
+      - List<ScheduleDAO> shot_schedule
     }
 
     class PetDAO {
@@ -266,5 +266,33 @@ Final Project for CSYE 6200 - Immunization Record Application
     class ImmunizationReportDAO {
       - List<ShotDAO> shots
       - PetDAO pet
+    }
+    class TaxDTO {
+      - float tax_rate
+      - float tax_amount
+    }
+    class CustomerDTO {
+      - String name
+      - String phone
+    }
+    class BillingUserDTO {
+      - String name
+      - String phone
+    }
+    class BillingUserDTO {
+      - String name
+      - String address
+      - String phone
+    }
+    class BillItemsDTO {
+      - String name
+      - float price
+      - String type
+    }
+    class BillSummaryDTO {
+      - CustomerDTO customer
+      - BillingUserDTO user
+      - TaxDTO tax
+      - List<BillItemsDTO> items
     }
 ```
