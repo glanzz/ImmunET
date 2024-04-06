@@ -130,6 +130,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     class User {
       String username
       String password
+      String billing_address
     }
 
     class Person {
