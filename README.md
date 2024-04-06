@@ -2,6 +2,10 @@
 Final Project for CSYE 6200 - Immunization Record Application
 
 
+## ER-Diagram
+![ER Diagram](/docs/ER/ER-IMMUNET-Light.png)
+
+
 ## Models
 ```mermaid
   classDiagram
@@ -310,3 +314,5 @@ Final Project for CSYE 6200 - Immunization Record Application
 ## Documentation Helper
 - Use the [MERMAID TO PNG](https://marketplace.visualstudio.com/items?itemName=LuisAlvesMartins.markdown-code-to-png) to extract the PNG (Note: It replaces the markdown with image so make sure to remove image in README.md file)
 - Move the images to docs file
+
+
