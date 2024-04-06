@@ -9,7 +9,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       <<abstract>>
       + abstract boolean isComplete()
       + abstract List<ShotDTO> getShotDTO()
-      - abstract void generateSchedule()
+      + abstract void generateSchedule()
     }
     class VaccineFactory {
       + getInstance() VaccineFactory
