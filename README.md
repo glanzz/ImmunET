@@ -215,7 +215,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     Schedule --> ImmunizationStatus
     Pet --> Gender
     Pet --> Species
-    Vaccine --> Species
+    Vaccine --> Species: Association
     ShotFactory..SingleShotRecord
     ShotFactory..MultiShotRecord
     VaccineFactory..Vaccine
