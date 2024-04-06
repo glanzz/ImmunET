@@ -129,23 +129,33 @@ Final Project for CSYE 6200 - Immunization Record Application
     }
 
     class User {
-      String username
-      String password
-      String billing_address
+      # String username
+      # String password
+      # String billing_address
     }
 
     class Person {
-      String name
-      String address
-      Date dob
+      # String name
+      # String address
+      # Date dob
     }
 
     class Owner {
+      # String name
+      # String address
+      # Date dob
+      + Owner(name, dob, address) Owner
       + getPets() List<Pet>
     }
 
 
     class Doctor {
+      # String name
+      # String address
+      # Date dob
+      # String username
+      # String password
+      # String billing_address
       - String clinic_address
       - float service_cost
     }
