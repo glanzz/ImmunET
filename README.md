@@ -220,12 +220,11 @@ Final Project for CSYE 6200 - Immunization Record Application
     ShotFactory..MultiShotRecord
     VaccineFactory..Vaccine
     BillItemFactory..BillItem
-    Bill *-- BillItem : Composition
     BillItemType --> BillItem
     BillFactory --> BillType
     Bill --> BillStatus
     BillFactory..Bill
-    Bill *-- BillItem : Composition
+    BillItem *-- Bill : Composition
     
 ```
 
