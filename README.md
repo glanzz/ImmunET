@@ -59,25 +59,25 @@ Final Project for CSYE 6200 - Immunization Record Application
     class SingleShotRecord {
       - Vaccine vaccine
       - Schedule schedule
-      + void SingleShotRecord(Vaccine v)
+      + SingleShotRecord(Vaccine v) SingleShotRecord
       + markComplete(Doctor signedDoctor) void
       + static getByScheduleId(int scheduleID) ShotRecord
 
-      + boolean isComplete()
-      + List<ShotDTO> getShotDTO()
-      - void generateSchedule()
+      + isComplete() boolean
+      + getShotDTO() List<ShotDTO>
+      - generateSchedule() void 
     }
 
     class MultiShotRecord {
       - Vaccine vaccine
       - List<Schedule> schedules
-      + void MultiShotRecord(Vaccine v)
-      + void markComplete(int scheduleID, Doctor signedDoctor)
+      + MultiShotRecord(Vaccine v) MultiShotRecord
+      + markComplete(int scheduleID, Doctor signedDoctor) void
       + static getByScheduleId(int scheduleID) ShotRecord
 
-      + boolean isComplete()
-      + List<ShotDTO> getShotDTO()
-      - void generateSchedule()
+      + isComplete() boolean
+      + getShotDTO() List<ShotDTO>
+      - generateSchedule() void
     }
     class Gender {
       <<enumeration>>
@@ -98,7 +98,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       - Date dob
       - Gender gender
       - Species s
-      + Pet(String name, Date dob, Gender gender, Species s) void
+      + Pet(String name, Date dob, Gender gender, Species s) Pet
       + save() void
       + getShotRecords() List<ShotRecord>
     }
@@ -115,7 +115,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     class ImmunizationReport {
       - List<ShotRecord> immunizationRecords
       - Pet pet
-      + ImmunizationReport(Pet p) void
+      + ImmunizationReport(Pet p) ImmunizationReport
       - load(Pet p) void
       + create() void
       + addShotRecord(Vaccine v) void
