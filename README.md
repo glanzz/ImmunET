@@ -1,5 +1,6 @@
 # ImmunET
 Final Project for CSYE 6200 - Immunization Record Application
+
 ## Models
 ```mermaid
   classDiagram
@@ -10,7 +11,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       + abstract List<ShotDAO> getShotDAO()
       - abstract void generateSchedule()
     }
-    class VaccineFactory{
+    class VaccineFactory {
       + VaccineFactory getInstance()
       + Vaccine getVaccine(String name, int frequency, String intervalsCSV, int offset)
     }
@@ -146,6 +147,60 @@ Final Project for CSYE 6200 - Immunization Record Application
 
     class Doctor {
       - String clinic_address
+      - float service_cost
+    }
+
+
+    class BillStatus {
+      <<enumeration>>
+      CANCELLED
+      PAID
+      PENDING
+    }
+
+    class BillItemType {
+      <<enumeration>>
+      SERVICE
+      VACCINE
+    }
+
+    class BillItemFactory {
+      + getInstance() BillItemFactory
+      + getItem(Doctor d) Item
+      + getItem(ShotRecord s) Item
+    }
+
+    class BillItem {
+      - int id
+      - String name
+      - float cost
+      - BillItemType type
+      + BillItem(String name, float cost, BillItemType type) BillItem
+    }
+
+    class Bill {
+      - static final TAX_RATE
+      - int id
+      - User from
+      - Person to
+      - List<BillItem> items
+      - Date billing_date
+      - float tax_percent
+      + getTaxInfo() TaxDTO
+      + save() void
+      + getSummary() BillSummaryDTO
+      + Bill(List<ShotRecords> items, Doctor d, Person o) Bill
+    }
+    
+    class BillType {
+      <<enumeration>>
+      DAILY
+      COMPLETE
+    }
+
+    class BillFactory {
+      + getInstance() BillFactory
+      + getImmunizationBill(ImmunizationReport report) Bill
     }
     
     User --|> Person : Inheritance
@@ -154,6 +209,7 @@ Final Project for CSYE 6200 - Immunization Record Application
     SingleShotRecord --|> ShotRecord: Inheritance
     MultiShotRecord --|> ShotRecord: Inheritance
     ShotRecord *-- ImmunizationReport : Composition
+    Pet *-- ImmunizationReport
     Schedule *-- ShotRecord : Composition
     Schedule ..|> Vaccine : Realization
     Schedule --> ImmunizationStatus
@@ -163,7 +219,14 @@ Final Project for CSYE 6200 - Immunization Record Application
     ShotFactory..SingleShotRecord
     ShotFactory..MultiShotRecord
     VaccineFactory..Vaccine
-
+    BillItemFactory..BillItem
+    Bill *-- BillItem : Composition
+    BillItemType --> BillItem
+    BillFactory --> BillType
+    Bill --> BillStatus
+    BillFactory..Bill
+    Bill *-- BillItem : Composition
+    
 ```
 
 
