@@ -27,6 +27,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       - int offset
       - boolean default
       - Species species
+      - float cost
       + isDefault() boolean
       + Vaccine(String name, int frequency, String intervalsCSV, int offset, Species s, Boolean default) void
       + static parseIntervals(String intervalsCSV) Integer[]
