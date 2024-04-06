@@ -12,8 +12,8 @@ Final Project for CSYE 6200 - Immunization Record Application
       - abstract void generateSchedule()
     }
     class VaccineFactory {
-      + VaccineFactory getInstance()
-      + Vaccine getVaccine(String name, int frequency, String intervalsCSV, int offset)
+      + getInstance() VaccineFactory
+      + getVaccine(String name, int frequency, String intervalsCSV, int offset) Vaccine
     }
 
     class ShotFactory {
@@ -30,7 +30,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       - Species species
       - float cost
       + isDefault() boolean
-      + Vaccine(String name, int frequency, String intervalsCSV, int offset, Species s, Boolean default) void
+      + Vaccine(String name, int frequency, String intervalsCSV, int offset, Species s, Boolean default) Vaccine
       + static parseIntervals(String intervalsCSV) Integer[]
       + getShotRecord(Date dob) ShotRecord
       + save() void
@@ -48,12 +48,12 @@ Final Project for CSYE 6200 - Immunization Record Application
       - Date scheduledDate
       - Date administeredDate
       - ImmunizationStatus status
-      + void isDelayed()
-      + void isComplete()
-      + void markComplete(Doctor d)
-      + void setScheduledDate(Date date)
-      + void setAdministeredDate(Date date)
-      - void save()
+      + isDelayed() boolean
+      + isComplete() boolean
+      + markComplete(Doctor d) void
+      + setScheduledDate(Date date) void
+      + setAdministeredDate(Date date) void
+      - save() void
     }
 
     class SingleShotRecord {
