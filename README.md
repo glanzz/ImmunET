@@ -91,7 +91,7 @@ Final Project for CSYE 6200 - Immunization Record Application
       FELINE
       AVIAN
     }
-
+    note for Pet "getShotRecords() Gives list of shot record or empty if pet immunization record already exists"
     class Pet {
       - int id
       - String name
