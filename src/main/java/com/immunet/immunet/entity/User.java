@@ -14,7 +14,7 @@ public class User extends BaseEntity {
 	@Column(nullable=false, columnDefinition = "TEXT")
 	private String password;
 	
-	@Column(name="billing_address", columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String billingAddress;
 
 

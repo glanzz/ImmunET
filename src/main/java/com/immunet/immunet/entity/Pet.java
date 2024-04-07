@@ -13,8 +13,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="pets")
 public class Pet extends BaseEntity {
-	@NonNull
-	@Column(name="name", nullable=false)
+	@Column(nullable=false)
 	private String name;
 	
 	@Column(nullable=false)
