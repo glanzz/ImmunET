@@ -1,23 +1,12 @@
 package com.immunet.immunet.entity;
 
-import java.util.Date;
-
-import org.springframework.lang.NonNull;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="users")
 public class User extends BaseEntity {
-	@Id
-	@NonNull
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
 
 	@Column(name="name", nullable=false)
 	private String name;
@@ -30,14 +19,16 @@ public class User extends BaseEntity {
 
 
 	public User(String name, String password, String billingAddress) {
+		super();
 		this.name = name;
 		this.password = password;
 		this.billingAddress = billingAddress;
 	}
-
-
-	public Integer getId() {
-		return id;
+	
+	public User(String name, String password) {
+		super();
+		this.name = name;
+		this.password = password;
 	}
 
 
