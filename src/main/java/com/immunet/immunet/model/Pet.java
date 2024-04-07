@@ -1,5 +1,7 @@
 package com.immunet.immunet.model;
+import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,12 +15,14 @@ public class Pet {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-
+	
+	@Column(name="name")
 	private String name;
-	private String dob;
+
+	private Date dob;
 	private String gender;
 	private String species;
-	public Pet(String name, String dob, String gender, String species) {
+	public Pet(String name, Date dob, String gender, String species) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
@@ -33,10 +37,10 @@ public class Pet {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDob() {
+	public Date getDob() {
 		return dob;
 	}
-	public void setDob(String dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 	public String getGender() {
