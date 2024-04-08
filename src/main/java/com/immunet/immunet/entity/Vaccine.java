@@ -6,6 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -65,6 +68,10 @@ public class Vaccine extends BaseEntity {
 	
 	@Column(nullable=false)
 	private double cost;
+	
+	@ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable=false)
+    private Doctor doctor;
 
 	public String getName() {
 		return name;
