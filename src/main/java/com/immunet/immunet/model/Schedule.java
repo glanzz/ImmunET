@@ -62,6 +62,15 @@ public class Schedule {
 		 * scheduled is after today => delayed
 		 * by default it is pending 
 		 * */
+		Date todayDate= new Date();
+		if (administeredDate != null) {
+			setStatus(ImmunizationStatus.COMPLETE);
+		} else if (scheduledDate.after(todayDate)) {
+			setStatus(ImmunizationStatus.DELAYED);
+		} else {
+			setStatus(ImmunizationStatus.PENDING);
+		}
+		
 	}
 	
 	
@@ -69,16 +78,7 @@ public class Schedule {
 	
 	public boolean isDelayed() {
 		return status == ImmunizationStatus.DELAYED;
-		if (status == ImmunizationStatus.PENDING) {
-			Date todayDate= new Date();
-			if (scheduledDate.after(todayDate)) {
-				setStatus(ImmunizationStatus.DELAYED);
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return false;
+		
 	}
 	
 	public boolean isComplete() {
