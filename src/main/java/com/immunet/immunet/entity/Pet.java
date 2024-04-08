@@ -1,12 +1,14 @@
 package com.immunet.immunet.entity;
 import java.util.Date;
 
-import org.springframework.lang.NonNull;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
@@ -26,6 +28,15 @@ public class Pet extends BaseEntity {
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private Species species;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable=false)
+    private Owner owner;
+	
+
+	@ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable=false)
+    private User creator;
 
 	public Pet(String name, Date dob, Gender gender, Species species) {
 		this.name = name;
@@ -59,6 +70,23 @@ public class Pet extends BaseEntity {
 	public void setSpecies(Species species) {
 		this.species = species;
 	}
-	
+	public Owner getOwner() {
+		return owner;
+	}
+
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+
+	public User getCreator() {
+		return creator;
+	}
+
+
+	public void setCreator(User user) {
+		this.creator = user;
+	}
 
 }
