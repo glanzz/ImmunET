@@ -1,35 +1,72 @@
 package com.immunet.immunet.model;
+import java.util.ArrayList;
 import java.util.Date;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.List;
 
 
-@Entity
-@Table(name="pets")
 public class Pet {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name="name")
-	private String name;
+	static enum Gender{
+		MALE,
+		FEMALE;
+	}
 
-	private Date dob;
-	private String gender;
-	private String species;
-	public Pet(String name, Date dob, String gender, String species) {
+	int id;
+	String name;
+	Date dob;
+	Gender gender;
+	Species species;
+	
+	
+	//pet constructor
+	public Pet(String name, Date dob, Gender gender, Species s) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
-		this.species = species;
+		this.species = s;
+		 
 	}
-	public Integer getId() {
+	
+	//saving new pet
+	public void save() {}
+	
+	public boolean immunizationReportExists() {
+		return false;
+	}
+	
+	public List<ShotRecord> getShotRecords() {
+		//Need to mention getShotsDTO list name to return as a list in this method
+		List<ShotRecord> shotRecords = new ArrayList<ShotRecord>();
+		if(immunizationReportExists()) {
+			return null;
+				
+		} else {
+			List<Vaccine> defaultVaccines = new ArrayList<Vaccine>();
+			for(Vaccine defaultVaccine: defaultVaccines) {
+				shotRecords.add(defaultVaccine.getShotRecord(this.dob));
+				
+			}
+		}
+		return shotRecords;//(getShotsDTO) this already return a list so need to pass it here
+	}
+		
+	//getters and setters
+	public Species getS() {
+		return species;
+	}
+	public void setSpecies(Species s) {
+		this.species = s;
+	}
+	public Gender getGender() {
+		return gender;
+	}
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+	public int getId() {
 		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -43,18 +80,7 @@ public class Pet {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	public String getSpecies() {
-		return species;
-	}
-	public void setSpecies(String species) {
-		this.species = species;
-	}
+
 	
 
 }
