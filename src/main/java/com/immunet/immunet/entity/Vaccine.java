@@ -73,6 +73,14 @@ public class Vaccine extends BaseEntity {
     @JoinColumn(name = "created_by", nullable=false)
     private Doctor doctor;
 
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
 	public String getName() {
 		return name;
 	}
