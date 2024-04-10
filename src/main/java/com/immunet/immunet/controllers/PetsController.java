@@ -1,6 +1,6 @@
 package com.immunet.immunet.controllers;
 import com.immunet.immunet.dto.BillingItemDTO;
-import com.immunet.immunet.model.Pet;
+import com.immunet.immunet.entity.Pet;
 import com.immunet.immunet.repository.PetRepository;
 
 import java.util.ArrayList;
