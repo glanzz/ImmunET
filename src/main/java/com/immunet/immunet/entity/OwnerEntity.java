@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="owners")
-public class Owner extends BaseEntity {
+public class OwnerEntity extends BaseEntity {
 
 	@Column(name="name", nullable=false)
 	private String name;
@@ -30,17 +30,17 @@ public class Owner extends BaseEntity {
 	
 	@ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable=false)
-	private User user;
+	private UserEntity user;
 
-	public User getUser() {
+	public UserEntity getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserEntity user) {
 		this.user = user;
 	}
 
-	public Owner(String name, Date dob, Gender gender, String address) {
+	public OwnerEntity(String name, Date dob, Gender gender, String address) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;

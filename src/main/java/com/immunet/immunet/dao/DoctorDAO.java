@@ -6,36 +6,36 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.immunet.immunet.entity.PetEntity;
+import com.immunet.immunet.entity.DoctorEntity;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 
 @Repository
-public class PetDAO implements EntityDAO<PetEntity> {
+public class DoctorDAO implements EntityDAO<DoctorEntity> {
 	
 	@Autowired
 	private EntityManager entityManager;
 
 	@Override
-	public List<PetEntity> get() {
+	public List<DoctorEntity> get() {
 		// TODO Auto-generated method stub
 		Session currentSession = entityManager.unwrap(Session.class);
-		Query query  = currentSession.createQuery("from pets", PetEntity.class);
-		List<PetEntity> pets = query.getResultList();
-		return pets;
+		Query query  = currentSession.createQuery("from doctors", DoctorEntity.class);
+		List<DoctorEntity> doctors = query.getResultList();
+		return doctors;
 	}
 
 	@Override
-	public PetEntity get(Integer id) {
+	public DoctorEntity get(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void save(PetEntity pet) {
+	public void save(DoctorEntity doctor) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		currentSession.persist(pet);
+		currentSession.persist(doctor);
 	}
 
 	@Override

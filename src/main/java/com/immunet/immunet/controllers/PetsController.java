@@ -1,6 +1,6 @@
 package com.immunet.immunet.controllers;
 import com.immunet.immunet.dto.BillingItemDTO;
-import com.immunet.immunet.entity.Pet;
+import com.immunet.immunet.entity.PetEntity;
 import com.immunet.immunet.repository.PetRepository;
 import com.immunet.immunet.service.PetService;
 
@@ -22,12 +22,12 @@ public class PetsController {
 	PetService petService;
 
 	@GetMapping("/pets")
-	public List<Pet> getAllPets() {
+	public List<PetEntity> getAllPets() {
 		return petRepository.findAll();
 	}
 	
 	@PostMapping("/pets")
-	public Pet save(@RequestBody Pet pet) {
+	public PetEntity save(@RequestBody PetEntity pet) {
 		petService.save(pet);
 		return pet;
 	}

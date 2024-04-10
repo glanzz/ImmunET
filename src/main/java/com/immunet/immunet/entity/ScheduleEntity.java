@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="schedules")
-public class Schedule extends BaseEntity {
+public class ScheduleEntity extends BaseEntity {
 	
 	
 
@@ -22,21 +22,21 @@ public class Schedule extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id", referencedColumnName = "id", nullable=false)
-    private Pet pet;
+    private PetEntity pet;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vaccine_id", referencedColumnName = "id", nullable=false)
-    private Vaccine vaccine;
+    private VaccineEntity vaccine;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "given_by", referencedColumnName = "id", nullable=false)
-    private Doctor doctor;
+    private DoctorEntity doctor;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "id", nullable=false)
-    private User user;
+    private UserEntity user;
 	
-	public Schedule(Date scheduleDate, Vaccine v) {
+	public ScheduleEntity(Date scheduleDate, VaccineEntity v) {
 		this.scheduleDate = scheduleDate;
 		this.vaccine = v;
 	}
@@ -57,35 +57,35 @@ public class Schedule extends BaseEntity {
 		this.takenDate = takenDate;
 	}
 	
-	public Pet getPet() {
+	public PetEntity getPet() {
 		return pet;
 	}
 
-	public void setPet(Pet pet) {
+	public void setPet(PetEntity pet) {
 		this.pet = pet;
 	}
 
-	public Vaccine getVaccine() {
+	public VaccineEntity getVaccine() {
 		return vaccine;
 	}
 
-	public void setVaccine(Vaccine vaccine) {
+	public void setVaccine(VaccineEntity vaccine) {
 		this.vaccine = vaccine;
 	}
 
-	public Doctor getDoctor() {
+	public DoctorEntity getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(DoctorEntity doctor) {
 		this.doctor = doctor;
 	}
 
-	public User getUser() {
+	public UserEntity getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserEntity user) {
 		this.user = user;
 	}
 

@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="pets")
-public class Pet extends BaseEntity {
+public class PetEntity extends BaseEntity {
 	@Column(nullable=false)
 	private String name;
 	
@@ -31,14 +31,14 @@ public class Pet extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable=false)
-    private Owner owner;
+    private OwnerEntity owner;
 	
 
 	@ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable=false)
-    private User creator;
+    private UserEntity creator;
 
-	public Pet(String name, Date dob, Gender gender, Species species) {
+	public PetEntity(String name, Date dob, Gender gender, Species species) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
@@ -70,22 +70,22 @@ public class Pet extends BaseEntity {
 	public void setSpecies(Species species) {
 		this.species = species;
 	}
-	public Owner getOwner() {
+	public OwnerEntity getOwner() {
 		return owner;
 	}
 
 
-	public void setOwner(Owner owner) {
+	public void setOwner(OwnerEntity owner) {
 		this.owner = owner;
 	}
 
 
-	public User getCreator() {
+	public UserEntity getCreator() {
 		return creator;
 	}
 
 
-	public void setCreator(User user) {
+	public void setCreator(UserEntity user) {
 		this.creator = user;
 	}
 

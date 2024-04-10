@@ -10,34 +10,39 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="doctors")
-public class Doctor extends BaseEntity {
+public class DoctorEntity extends BaseEntity {
 
-	private double serviceCost;
+	private Double serviceCost;
 	
-	@OneToOne(fetch= FetchType.LAZY)
+	@OneToOne(fetch= FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable=false)
-    private User userDetails;
+    private UserEntity userDetails;
 
 
 	@Column(columnDefinition = "TEXT")
 	private String clinicAddress;
+	
+	
+	public DoctorEntity() {
+		
+	}
 
-	public Doctor(double serviceCost, String clinicAddress) {
+	public DoctorEntity(Double serviceCost, String clinicAddress) {
 		super();
 		this.serviceCost = serviceCost;
 		this.clinicAddress = clinicAddress;
 	}
 	
-	public Doctor(String clinicAddress) {
+	public DoctorEntity(String clinicAddress) {
 		super();
 		this.clinicAddress = clinicAddress;
 	}
 
-	public double getServiceCost() {
+	public Double getServiceCost() {
 		return serviceCost;
 	}
 
-	public void setServiceCost(double serviceCost) {
+	public void setServiceCost(Double serviceCost) {
 		this.serviceCost = serviceCost;
 	}
 
@@ -49,11 +54,11 @@ public class Doctor extends BaseEntity {
 		this.clinicAddress = clinicAddress;
 	}
 	
-	public User getUserDetails() {
+	public UserEntity getUserDetails() {
 		return userDetails;
 	}
 
-	public void setUserDetails(User user) {
+	public void setUserDetails(UserEntity user) {
 		this.userDetails = user;
 	}
 	

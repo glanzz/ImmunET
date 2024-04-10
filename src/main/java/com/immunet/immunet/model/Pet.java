@@ -50,7 +50,7 @@ public class Pet {
 	}
 		
 	//getters and setters
-	public Species getS() {
+	public Species getSpecies() {
 		return species;
 	}
 	public void setSpecies(Species s) {

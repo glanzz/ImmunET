@@ -6,15 +6,14 @@ import java.util.List;
 
 public class Owner extends Person {
 	
-	public Owner(String name, String address, Date dob) {
-		super(name, address, dob);
+	public Owner(String name, String address) {
+		super(name, address);
 	}	
 	
 	
-	public List<Pet> displayPets() {
+	/*public List<Pet> displayPets() {
 		return Pet.getPets();
-	}
-	
+	}*/
 	
 
 }

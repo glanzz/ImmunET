@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.immunet.immunet.dao.PetDAO;
-import com.immunet.immunet.entity.Pet;
+import com.immunet.immunet.entity.PetEntity;
 
 import jakarta.transaction.Transactional;
 
@@ -15,7 +15,7 @@ public class PetService {
 	private PetDAO petDAO;
 	
 	@Transactional
-	public void save(Pet p) {
+	public void save(PetEntity p) {
 		petDAO.save(p);
 	}
 

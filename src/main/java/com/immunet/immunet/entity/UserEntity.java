@@ -6,10 +6,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="users")
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
 
 	@Column(name="name", nullable=false)
 	private String name;
+	
+	@Column(nullable=false)
+	private String contact;
 	
 	@Column(nullable=false, columnDefinition = "TEXT")
 	private String password;
@@ -18,17 +21,22 @@ public class User extends BaseEntity {
 	private String billingAddress;
 
 
-	public User(String name, String password, String billingAddress) {
+	public UserEntity(String name, String contact, String password, String billingAddress) {
 		super();
 		this.name = name;
 		this.password = password;
+		this.contact = contact;
 		this.billingAddress = billingAddress;
 	}
 	
-	public User(String name, String password) {
+	public UserEntity(String name, String password) {
 		super();
 		this.name = name;
 		this.password = password;
+	}
+	
+	public UserEntity() {
+		
 	}
 
 
@@ -49,6 +57,15 @@ public class User extends BaseEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 

@@ -5,7 +5,6 @@ import java.util.Date;
 public class Person {
 	String name;
 	String address;
-	Date dob;
 	
 	public String getName() {
 		return name;
@@ -23,19 +22,14 @@ public class Person {
 		this.address = address;
 	}
 
-	public Date getDob() {
-		return dob;
-	}
 
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-
-	public Person(String name, String address, Date dob) {
+	public Person(String name, String address) {
 		super();
 		this.name = name;
 		this.address = address;
-		this.dob = dob;
+	}
+	
+	public Person() {
 	}
 
 
