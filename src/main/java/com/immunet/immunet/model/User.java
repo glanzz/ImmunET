@@ -44,7 +44,7 @@ public class User extends Person {
 	}
 	
 	public static boolean comparePassword(String password1, String password2) {
-		return password1 == password2;
+		return password1.compareTo(password2) == 0;
 	}
 	
 	public void load(UserEntity user) {

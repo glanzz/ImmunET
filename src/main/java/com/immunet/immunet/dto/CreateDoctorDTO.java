@@ -1,9 +1,15 @@
 package com.immunet.immunet.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class CreateDoctorDTO {
+	@NotNull
 	String name;
+	@NotNull
 	String password;
+	@NotNull
 	String rePassword;
+	@NotNull
 	String contact;
 	String address = null;
 	Double serviceCost = null;

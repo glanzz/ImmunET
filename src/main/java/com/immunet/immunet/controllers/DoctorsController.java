@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.immunet.immunet.dto.CreateDoctorDTO;
 import com.immunet.immunet.entity.DoctorEntity;
+import com.immunet.immunet.exception.BadRequest;
 import com.immunet.immunet.model.Doctor;
+import com.immunet.immunet.model.User;
 import com.immunet.immunet.repository.DoctorRepository;
 
 @RestController
@@ -23,13 +26,13 @@ public class DoctorsController {
 	Doctor doctor;
 	
 	@PostMapping("/doctors")
-	public Doctor createDoctor(@RequestBody CreateDoctorDTO doctorData) {
-		if (doctorData.getPassword() != doctorData.getRePassword()) {
-			// raise Invalid password
+	public Doctor createDoctor(@Validated @RequestBody CreateDoctorDTO doctorData) throws BadRequest {
+		System.out.println(doctorData.getPassword());
+		System.out.println(doctorData.getRePassword());
+		if (User.comparePassword(doctorData.getPassword(), doctorData.getRePassword()) == false) {
+			throw new BadRequest("Passwords do not match !");
 		}
-		// Validate password requirements
-		//
-		// Doctor.comparePassword(doctorData.getPassword(), doctorData.getRePassword());
+		
 		doctor.setName(doctorData.getName());
 		doctor.setClinicAddress(doctorData.getAddress());
 		doctor.setUsername(doctorData.getContact());
