@@ -17,16 +17,9 @@ public class Doctor extends BaseEntity {
 	@OneToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable=false)
     private User userDetails;
-	
-	public User getUserDetails() {
-		return userDetails;
-	}
 
-	public void setUserDetails(User user) {
-		this.userDetails = user;
-	}
 
-	@Column(nullable=false, columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String clinicAddress;
 
 	public Doctor(double serviceCost, String clinicAddress) {
@@ -54,6 +47,14 @@ public class Doctor extends BaseEntity {
 
 	public void setClinicAddress(String clinicAddress) {
 		this.clinicAddress = clinicAddress;
+	}
+	
+	public User getUserDetails() {
+		return userDetails;
+	}
+
+	public void setUserDetails(User user) {
+		this.userDetails = user;
 	}
 	
 
