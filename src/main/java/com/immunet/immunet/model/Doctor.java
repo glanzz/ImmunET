@@ -6,10 +6,10 @@ public class Doctor extends User {
 	String clinicAddress;
 	float serviceCost;
 
-	public Doctor(String name, String address, Date dob, String username, String password, String clinic_address,float service_cost) {
+	public Doctor(String name, String address, Date dob, String username, String password, String clinicAddress,float serviceCost) {
 		super(name, address, dob, username, password);
-		this.clinicAddress = clinic_address;
-		this.serviceCost = service_cost;
+		this.clinicAddress = clinicAddress;
+		this.serviceCost = serviceCost;
 	}
 	public Doctor(String name, String address, Date dob, String username, String password) {
 		super(name, address, dob, username, password);
