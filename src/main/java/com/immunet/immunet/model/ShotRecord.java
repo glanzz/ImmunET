@@ -9,10 +9,11 @@
  */
 package com.immunet.immunet.model;
 
+import java.util.Date;
 import java.util.List;
 
 public abstract class ShotRecord {
     public abstract boolean isComplete();
     public abstract List<ShotRecord> getShotDTOs(); // changed to shortRecord -> mv
-    public abstract void generateSchedule();
+    public abstract void generateSchedule(Date dob);
 }

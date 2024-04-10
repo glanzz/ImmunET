@@ -10,14 +10,15 @@
 package com.immunet.immunet.model;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class SingleShotRecord extends ShotRecord {
     private Vaccine vaccine;
     private Schedule schedule;
 
-    public SingleShotRecord(Vaccine vaccine) {
+    public SingleShotRecord(Vaccine vaccine, Date dob) {
         this.vaccine = vaccine;
-        this.generateSchedule();
+        this.generateSchedule(dob);
     }
 
     @Override
@@ -33,18 +34,18 @@ public class SingleShotRecord extends ShotRecord {
 //    }
 
     @Override
-    public void generateSchedule() {
-        // Create a calendar instance to manage date
+    public void generateSchedule(Date dob) {
+        // Create a calendar instance starting at the pet's date of birth
         Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dob);
 
-        // Apply the offset from the vaccine if it exists
+        // Apply the offset from the vaccine to the date of birth
         calendar.add(Calendar.DAY_OF_YEAR, vaccine.getOffset());
 
         // Create the schedule and set the scheduled date
         this.schedule = new Schedule();
         this.schedule.setScheduledDate(calendar.getTime());
-        
-        // Additional properties for schedule can be set here if necessary
+
     }
 
     public void markComplete(Doctor doctor) {

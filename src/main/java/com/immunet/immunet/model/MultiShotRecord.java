@@ -11,17 +11,17 @@ package com.immunet.immunet.model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MultiShotRecord extends ShotRecord {
     private Vaccine vaccine;
     private List<Schedule> schedules;
 
-    public MultiShotRecord(Vaccine vaccine) {
+    public MultiShotRecord(Vaccine vaccine, Date dob) {
         this.vaccine = vaccine;
         this.schedules = new ArrayList<>();
-        this.generateSchedule();
+        this.generateSchedule(dob);
     }
 
     @Override
@@ -37,27 +37,28 @@ public class MultiShotRecord extends ShotRecord {
 //    }
 
     @Override
-    public void generateSchedule() {
-        // Clear the existing schedules before regenerating them
+    public void generateSchedule(Date dob) {
+        // Clear any existing schedules
         this.schedules.clear();
 
-        // Assuming the intervals are the number of days between shots
-        List<Integer> intervalDays = vaccine.getIntervals();
-        
-        // Set the first schedule date based on the offset
+        // Create a calendar instance starting at the pet's date of birth
         Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dob);
+
+        // Add the offset to the date of birth
         calendar.add(Calendar.DAY_OF_YEAR, vaccine.getOffset());
-        
+
+        List<Integer> intervalDays = vaccine.getIntervals();
         for (int i = 0; i < vaccine.getFrequency(); i++) {
             Schedule schedule = new Schedule();
             schedule.setScheduledDate(calendar.getTime());
-            schedules.add(schedule);
+            this.schedules.add(schedule);
 
             if (i < intervalDays.size()) {
-                // Add the interval to the current date for the next shot
                 calendar.add(Calendar.DAY_OF_YEAR, intervalDays.get(i));
+            } else if (!intervalDays.isEmpty()) {
+                calendar.add(Calendar.DAY_OF_YEAR, intervalDays.get(intervalDays.size() - 1));
             }
-            // If there are no more intervals, use the last interval for subsequent shots
         }
     }
 
