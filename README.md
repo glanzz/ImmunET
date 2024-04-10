@@ -53,6 +53,9 @@ Final Project for CSYE 6200 - Immunization Record Application
       - Date scheduledDate
       - Date administeredDate
       - ImmunizationStatus status
+      - Doctor doctor
+      + Schedule(Date scheduledDate, Date administeredDate) Schedule
+      - updateStatus() void
       + isDelayed() boolean
       + isComplete() boolean
       + markComplete(Doctor d) void
@@ -203,6 +206,8 @@ Final Project for CSYE 6200 - Immunization Record Application
       - float tax_percent
       + getTaxInfo() TaxDTO
       + save() void
+      + getSum() float
+      + getTax() float
       + getSummary() BillSummaryDTO
       + Bill(List<ShotRecords> items, Doctor d, Person o) Bill
     }
@@ -286,10 +291,6 @@ Final Project for CSYE 6200 - Immunization Record Application
       - float tax_amount
     }
     class CustomerDTO {
-      - String name
-      - String phone
-    }
-    class BillingUserDTO {
       - String name
       - String phone
     }
