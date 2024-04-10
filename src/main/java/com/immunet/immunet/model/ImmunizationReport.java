@@ -11,7 +11,10 @@ public class ImmunizationReport {
 
     public ImmunizationReport(Pet pet) {
         this.pet = pet;
-        this.shotRecords = new ArrayList<>();
+        this.shotRecords = pet.getShotRecords();
+        if (shotRecords == null) {
+           this.load(pet.id);
+         }
     }
 
     public void addShotRecord(Vaccine vaccine) {
