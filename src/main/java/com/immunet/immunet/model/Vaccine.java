@@ -50,10 +50,10 @@ public class Vaccine {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getFrequency() {
+	public Integer getFrequency() {
 		return frequency;
 	}
-	public void setFrequency(int frequency) throws BadRequest {
+	public void setFrequency(Integer frequency) throws BadRequest {
 		this.frequency = frequency;
 		if (validateFrequency()== false) {
 			throw new BadRequest("Frequency not compatible with intervals given");

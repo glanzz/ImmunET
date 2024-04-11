@@ -20,14 +20,16 @@ public class VaccineFactory {
 	public VaccineFactory() {
 		
 	}
-	
+	public Vaccine getVaccine(VaccineEntity vaccineEntity) throws BadRequest {
+		Vaccine vaccine = new Vaccine();
+		vaccine.load(vaccineEntity);
+		return vaccine;
+	}
 	public Vaccine getVaccine(String name, Species species, int frequency, String intervalsCSV, int offset, int doctorId) throws BadRequest {
 		VaccineEntity vaccineEntity = vaccineRepository.findDistinctByNameAndSpeciesAndDoctorId(name, EntitySpecies.valueOf(species.name()), doctorId);
 		if (vaccineEntity != null) {
 			// Load existing vacccine
-			Vaccine existingVaccine = new Vaccine();
-			existingVaccine.load(vaccineEntity);
-			return existingVaccine;
+			return this.getVaccine(vaccineEntity);
 			
 		} else {
 			return new Vaccine(vaccineService, name, species, frequency,  intervalsCSV, offset) ;
