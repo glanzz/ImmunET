@@ -24,6 +24,7 @@ public class Doctor extends User {
 		setClinicAddress(address);
 		setServiceCost(serviceCost);
 	}
+
 	public Doctor(String name, String address, String username, String password) {
 		super(name, address, username, password);
 	}
