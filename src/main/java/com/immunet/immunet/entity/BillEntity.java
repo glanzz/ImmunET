@@ -15,7 +15,7 @@ public class BillEntity extends BaseEntity {
 
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Status status = Status.PENDING;
+	private EntityStatus status = EntityStatus.PENDING;
 	
 	@Column(nullable=false)
 	private Double taxPercent;
@@ -28,17 +28,17 @@ public class BillEntity extends BaseEntity {
     @JoinColumn(name = "bill_by", referencedColumnName = "id", nullable=false)
     private UserEntity billBy;
 	
-	public BillEntity(Status status, Double taxPercent) {
+	public BillEntity(EntityStatus status, Double taxPercent) {
 		super();
 		this.status = status;
 		this.taxPercent = taxPercent;
 	}
 	
-	public Status getStatus() {
+	public EntityStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(EntityStatus status) {
 		this.status = status;
 	}
 

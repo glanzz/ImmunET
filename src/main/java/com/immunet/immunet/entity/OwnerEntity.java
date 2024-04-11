@@ -23,7 +23,7 @@ public class OwnerEntity extends BaseEntity {
 	
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Gender gender;
+	private EntityGender gender;
 	
 	@Column(nullable=false, columnDefinition = "TEXT")
 	private String address;
@@ -40,7 +40,7 @@ public class OwnerEntity extends BaseEntity {
 		this.user = user;
 	}
 
-	public OwnerEntity(String name, Date dob, Gender gender, String address) {
+	public OwnerEntity(String name, Date dob, EntityGender gender, String address) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
@@ -63,11 +63,11 @@ public class OwnerEntity extends BaseEntity {
 		this.dob = dob;
 	}
 
-	public Gender getGender() {
+	public EntityGender getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(EntityGender gender) {
 		this.gender = gender;
 	}
 

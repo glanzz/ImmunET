@@ -1,6 +1,6 @@
 package com.immunet.immunet.entity;
 
-public enum Species {
+public enum EntitySpecies {
 	AVIAN,
 	CANINE,
 	FELINE
