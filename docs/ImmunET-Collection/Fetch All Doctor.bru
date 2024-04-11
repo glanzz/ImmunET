@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/doctors
+  url: http://localhost:8080/doctors/3/vaccines?species=FELINE
   body: json
   auth: none
+}
+
+query {
+  species: FELINE
 }
 
 body:json {
