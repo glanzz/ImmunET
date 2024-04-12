@@ -40,6 +40,14 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		return buildResponse(responseDTO);
 	}
 	
+	@ExceptionHandler(NotFound.class)
+	public ResponseEntity<Object> handleConflictRequest(HttpServletRequest req, NotFound exception) {
+		ErrorResponseDTO responseDTO = new ErrorResponseDTO();
+		responseDTO.setMessage(exception.getMessage());
+		responseDTO.setStatus(exception.getStatus());
+		return buildResponse(responseDTO);
+	}
+	
 	private ResponseEntity<Object> buildResponse(ErrorResponseDTO responseDTO) {
 		return new ResponseEntity<Object>(responseDTO, responseDTO.getStatus());
 	}

@@ -1,0 +1,20 @@
+meta {
+  name: Fetch All Immunizations
+  type: http
+  seq: 9
+}
+
+get {
+  url: http://localhost:8080/pets
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Glanz",
+    "password": "1234",
+    "re_password": "1234",
+    "contact": "glanzz"
+  }
+}

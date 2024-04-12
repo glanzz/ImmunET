@@ -87,10 +87,9 @@ public class ImmunizationReportService {
 			if(scheduleMap.get(v.getId()) == null) {
 				ShotRecord record = ShotFactory.getInstance().getShotRecord(v);
 				scheduleMap.put(v.getId(), record);
-			} else {
-				Schedule schedule = Schedule.load(s);
-				scheduleMap.get(v.getId()).addSchedule(schedule);
 			}
+			Schedule schedule = Schedule.load(s);
+			scheduleMap.get(v.getId()).addSchedule(schedule);
 		});
 		return scheduleMap.values();
 	}
