@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.immunet.immunet.exception.BadRequest;
+
 public class MultiShotRecord extends ShotRecord {
     private Vaccine vaccine;
     private List<Schedule> schedules;
@@ -22,6 +24,15 @@ public class MultiShotRecord extends ShotRecord {
         this.vaccine = vaccine;
         this.schedules = new ArrayList<>();
         this.generateSchedule(dob);
+    }
+    
+    public MultiShotRecord(Vaccine vaccine) {
+        this.vaccine = vaccine;
+        this.schedules = new ArrayList<>();
+    }
+    
+    public void addSchedule(Schedule s) {
+    	this.schedules.add(s);
     }
 
     @Override
@@ -62,13 +73,31 @@ public class MultiShotRecord extends ShotRecord {
         }
     }
 
-    public void markComplete(int scheduleId, Doctor doctor) {
+    public void markComplete(int scheduleId, Doctor doctor) throws Exception {
         Schedule scheduleToMark = this.schedules.stream()
             .filter(s -> s.getId() == scheduleId)
             .findFirst()
-            .orElseThrow(() -> new RuntimeException("Schedule not found"));
+            .orElseThrow(() -> new BadRequest("Schedule not found"));
         scheduleToMark.markComplete(doctor);
     }
+
+	@Override
+	public List<ShotRecord> getShotDTOs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vaccine getVaccine() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Schedule getSchedule() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
     // Getters and setters omitted for brevity
 }

@@ -33,14 +33,8 @@ public class Vaccine {
 
 	Species species;
 	
-	public int getId() {
+	public Integer getId() {
 		return this.id;
-	}
-	
-	
-	public ShotRecord getShotRecord(Date dob) {
-		ShotRecord s = new ShotRecord();
-		return s;
 	}
 	
 	
@@ -174,6 +168,11 @@ public class Vaccine {
 		this.setOffset(vaccine.getOffset());
 		this.setSpecies(Species.valueOf(vaccine.getSpecies().name()));
 		this.setDoctorId(vaccine.getDoctor().getId());
+	}
+	
+	
+	public boolean requiresMultipleShots() {
+		return frequency > 1;
 	}
 	
 	

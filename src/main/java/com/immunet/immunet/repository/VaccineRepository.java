@@ -12,4 +12,6 @@ public interface VaccineRepository extends JpaRepository<VaccineEntity, Integer>
 	VaccineEntity findDistinctByNameAndSpeciesAndDoctorId(String name, EntitySpecies species, Integer doctorId);
 	List<VaccineEntity> findAllByDoctorId(Integer doctorId);
 	List<VaccineEntity> findAllByDoctorIdAndSpecies(Integer doctorId, EntitySpecies species);
+	List<VaccineEntity> findAllByDoctorIdAndSpeciesAndIsDefault(Integer doctorId, EntitySpecies species, boolean isDefault);
+	
 }

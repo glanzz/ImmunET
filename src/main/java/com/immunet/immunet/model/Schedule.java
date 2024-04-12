@@ -2,9 +2,10 @@ package com.immunet.immunet.model;
 
 import java.util.Date;
 
+import com.immunet.immunet.entity.ScheduleEntity;
 
 public class Schedule {
-	int id;
+	Integer id;
 	Date scheduledDate;
 	 //static Date scheduledDate= new Date(124, 02, 03 );
 	Date administeredDate;
@@ -13,21 +14,21 @@ public class Schedule {
 		DELAYED,
 		COMPLETE;
 	}
-	ImmunizationStatus status= ImmunizationStatus.PENDING; //Initial status 
+	Integer doctorId;
+	ImmunizationStatus status= ImmunizationStatus.PENDING; //Initial status
+	
+	public Schedule() {
+		
+	}
 	
 	public Schedule(Date scheduledDate, Date administeredDate) {
-		super();
 		this.scheduledDate = scheduledDate;
 		this.administeredDate = administeredDate;
 		updateStatus();
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Date getScheduledDate() {
@@ -54,6 +55,10 @@ public class Schedule {
 
 	public void setStatus(ImmunizationStatus status) {
 		this.status = status;
+	}
+	
+	public Integer getDoctorId() {
+		return this.doctorId;
 	}
 	
 	private void updateStatus() {
@@ -98,6 +103,20 @@ public class Schedule {
 	}
 	
 	public void save() {
+		
+	}
+	
+	public static Schedule load(ScheduleEntity s) {
+		Schedule schedule = new Schedule();
+		schedule.id = s.getId();
+		schedule.setScheduledDate(s.getScheduleDate());
+		schedule.setAdministeredDate(s.getTakenDate());
+		schedule.setDoctorId(s.getDoctor().getId());
+		return schedule;
+	}
+
+	private void setDoctorId(Integer id2) {
+		this.doctorId = id2;
 		
 	}
 

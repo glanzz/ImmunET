@@ -10,11 +10,12 @@ public class Pet {
 		FEMALE;
 	}
 
-	int id;
+	Integer id;
 	String name;
 	Date dob;
 	Gender gender;
 	Species species;
+	Integer creatorID; 
 	
 	
 	//pet constructor
@@ -26,28 +27,13 @@ public class Pet {
 		 
 	}
 	
+	public boolean isPersisted() {
+		return this.id != null;
+	}
+	
 	//saving new pet
 	public void save() {}
 	
-	public boolean immunizationReportExists() {
-		return false;
-	}
-	
-	public List<ShotRecord> getShotRecords() {
-		//Need to mention getShotsDTO list name to return as a list in this method
-		List<ShotRecord> shotRecords = new ArrayList<ShotRecord>();
-		if(immunizationReportExists()) {
-			return null;
-				
-		} else {
-			List<Vaccine> defaultVaccines = new ArrayList<Vaccine>();
-			for(Vaccine defaultVaccine: defaultVaccines) {
-				shotRecords.add(defaultVaccine.getShotRecord(this.dob));
-				
-			}
-		}
-		return shotRecords;//(getShotsDTO) this already return a list so need to pass it here
-	}
 		
 	//getters and setters
 	public Species getSpecies() {
@@ -80,6 +66,15 @@ public class Pet {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
+
+	public Integer getCreatorID() {
+		return creatorID;
+	}
+
+	public void setCreatorID(Integer creatorID) {
+		this.creatorID = creatorID;
+	}
+	
 
 	
 

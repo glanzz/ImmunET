@@ -11,6 +11,7 @@ package com.immunet.immunet.model;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class SingleShotRecord extends ShotRecord {
     private Vaccine vaccine;
@@ -20,6 +21,15 @@ public class SingleShotRecord extends ShotRecord {
         this.vaccine = vaccine;
         this.generateSchedule(dob);
     }
+    
+    public SingleShotRecord(Vaccine vaccine) {
+        this.vaccine = vaccine;
+    }
+    
+    public void setSchedule(Schedule s) {
+    	this.schedule = s;
+    }
+  
 
     @Override
     public boolean isComplete() {
@@ -48,11 +58,35 @@ public class SingleShotRecord extends ShotRecord {
 
     }
 
-    public void markComplete(Doctor doctor) {
+    public void markComplete(Doctor doctor) throws Exception {
         if (this.schedule != null) {
             this.schedule.markComplete(doctor);
         }
     }
+
+	@Override
+	public List<ShotRecord> getShotDTOs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vaccine getVaccine() {
+		// TODO Auto-generated method stub
+		return this.vaccine;
+	}
+
+	@Override
+	public Schedule getSchedule() {
+		// TODO Auto-generated method stub
+		return this.schedule;
+	}
+
+	@Override
+	public void addSchedule(Schedule s) {
+		this.setSchedule(s);
+		
+	}
 
     // Getters and setters omitted for brevity
 }

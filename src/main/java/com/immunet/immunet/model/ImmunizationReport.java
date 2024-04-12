@@ -3,32 +3,52 @@ package com.immunet.immunet.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.immunet.immunet.exception.BadRequest;
+import com.immunet.immunet.service.ImmunizationReportService;
+
+/**
+ * Requires vaccinationRepostiroy
+ * */
 public class ImmunizationReport {
     private List<ShotRecord> shotRecords;
     private Pet pet;
+    private ImmunizationReportService service;
 
-    public ImmunizationReport(Pet pet) {
+    public ImmunizationReport(ImmunizationReportService service, Pet pet) throws BadRequest {
         this.pet = pet;
-        this.shotRecords = pet.getShotRecords();
-        if (shotRecords == null) {
-           this.load(pet.id);
-         }
+        this.service = service;
+        if (pet.isPersisted()) {
+        	this.load();
+        } else {
+        	this.loadDefaultRecords(pet.getCreatorID());
+        }
     }
 
-    public void addShotRecord(Vaccine vaccine) {
-//        if (shotRecordExists(vaccine)) {
-//            throw new DuplicateShotRecordException("Shot record for vaccine " + vaccine.getName() + " already exists.");
-//        }
-        ShotRecord newRecord = vaccine.isDefault() ? 
-                               new SingleShotRecord(vaccine) : 
-                               new MultiShotRecord(vaccine);
+    public void load() throws BadRequest {
+		// Load from pet ID the immunization reports from repository of schedules
+    	service.getExistingSchedules(pet).stream().forEach(s -> this.shotRecords.add(s));
+	}
+
+	public void addShotRecord(Vaccine vaccine) throws BadRequest {
+        if (shotRecordExists(vaccine)) {
+            throw new BadRequest("Shot record for vaccine " + vaccine.getName() + " already exists.");
+        }
+        ShotRecord newRecord = ShotFactory.getInstance().getShotRecord(vaccine, this.pet.getDob());
         this.shotRecords.add(newRecord);
     }
+	
+	public void loadDefaultRecords(Integer doctorId) throws BadRequest {
+		List<Vaccine> defaultVaccines = service.getDefaultVaccines(pet); // Fetch from vaccines repository
+		for(Vaccine defaultVaccine: defaultVaccines) {
+			this.addShotRecord(defaultVaccine);
+		}
+	}
 
     private boolean shotRecordExists(Vaccine vaccine) {
-        return this.shotRecords.stream().anyMatch(record -> record.getVaccine().equals(vaccine));
+        return this.shotRecords.stream().anyMatch(record -> record.getVaccine().getId().equals(vaccine.getId()));
     }
 
     // Assume a method in ShotRecord to get the associated vaccine
@@ -37,7 +57,14 @@ public class ImmunizationReport {
                         .map(record -> (record instanceof MultiShotRecord) ? 
                                        (MultiShotRecord) record : null)
                         .filter(Objects::nonNull)
-                        .forEach(record -> record.markComplete(scheduleId, signedDoctor));
+                        .forEach(record -> {
+							try {
+								record.markComplete(scheduleId, signedDoctor);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						});
     }
     
     
