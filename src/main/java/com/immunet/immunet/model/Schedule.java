@@ -111,7 +111,9 @@ public class Schedule {
 		schedule.id = s.getId();
 		schedule.setScheduledDate(s.getScheduleDate());
 		schedule.setAdministeredDate(s.getTakenDate());
-		schedule.setDoctorId(s.getDoctor().getId());
+		if (s.getDoctor() != null) {
+			schedule.setDoctorId(s.getDoctor().getId());
+		}
 		return schedule;
 	}
 

@@ -1,7 +1,7 @@
 package com.immunet.immunet.controllers;
 import com.immunet.immunet.dto.BillingItemDTO;
 import com.immunet.immunet.dto.CreatePetDTO;
-import com.immunet.immunet.dto.CreatePetResponseDTO;
+import com.immunet.immunet.dto.PetResponseDTO;
 import com.immunet.immunet.dto.CreateVaccineDTO;
 import com.immunet.immunet.dto.ImmunizationReportDTO;
 import com.immunet.immunet.entity.DoctorEntity;
@@ -58,12 +58,25 @@ public class PetsController {
 	
 
 	@GetMapping("/pets")
-	public List<PetEntity> getAllPets() {
-		return petRepository.findAll();
+	public List<PetResponseDTO> getAllPets() {
+		List<PetEntity> pets = petRepository.findAll();
+		List<PetResponseDTO> petsDetails = new ArrayList<PetResponseDTO>();
+		pets.forEach(pet -> {
+			Pet p = petFactory.getPet(pet);
+			Owner o = ownerFactory.getOwner(pet.getOwner());
+			ImmunizationReport report;
+			try {
+				report = immunizationReportFactory.getReport(p);
+			} catch (BadRequest e) {
+				return;
+			}
+			petsDetails.add(getPetCreationResponse(o, p, report));
+		});
+		return petsDetails;
 	}
 	
 	@PostMapping("/doctors/{doctorId}/pets")
-	public CreatePetResponseDTO save(@PathVariable Integer doctorId, @Validated @RequestBody CreatePetDTO petData) throws BadRequest, Unauthorized, Conflict {
+	public PetResponseDTO save(@PathVariable Integer doctorId, @Validated @RequestBody CreatePetDTO petData) throws BadRequest, Unauthorized, Conflict {
 		// Validate access
 		Optional<DoctorEntity> doctor = doctorRepository.findById(doctorId);
 		if(doctor.isEmpty()) {
@@ -124,16 +137,16 @@ public class PetsController {
 	 * Demonstrates the use of inner class and its creation
 	 * 
 	 * */
-	private CreatePetResponseDTO getPetCreationResponse(Owner o, Pet p, ImmunizationReport report) {
+	private PetResponseDTO getPetCreationResponse(Owner o, Pet p, ImmunizationReport report) {
 		
-		CreatePetResponseDTO response = new CreatePetResponseDTO();
+		PetResponseDTO response = new PetResponseDTO();
 		response.setId(p.getId());
 		response.setName(p.getName());
 		response.setDob(p.getDob());
 		response.setGender(p.getGender().name());
 		response.setSpecies(p.getSpecies().name());
 		
-		CreatePetResponseDTO.CreateOwnerDTO ownerResponse = response.new CreateOwnerDTO(); // Inner class instantiation
+		PetResponseDTO.CreateOwnerDTO ownerResponse = response.new CreateOwnerDTO(); // Inner class instantiation
 		ownerResponse.setId(o.getId());
 		ownerResponse.setName(o.getName());
 		ownerResponse.setAddress(o.getAddress());

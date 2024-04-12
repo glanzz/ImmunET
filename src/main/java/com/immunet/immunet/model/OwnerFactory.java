@@ -21,5 +21,11 @@ public class OwnerFactory {
 		}
 		return new Owner(service, name, address);
 	}
+	
+	public Owner getOwner(OwnerEntity entity) {
+		Owner owner = new Owner(service);
+		owner.load(entity);
+		return owner;
+	}
 
 }

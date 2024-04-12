@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotNull;
 
-public class CreatePetResponseDTO {
+public class PetResponseDTO {
 	
 	public class CreateOwnerDTO {
 		
