@@ -1,0 +1,9 @@
+com.immunet.immunet
+com.immunet.immunet.controllers
+com.immunet.immunet.dao
+com.immunet.immunet.dto
+com.immunet.immunet.entity
+com.immunet.immunet.exception
+com.immunet.immunet.model
+com.immunet.immunet.repository
+com.immunet.immunet.service
