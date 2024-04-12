@@ -1,0 +1,21 @@
+meta {
+  name: Create Doctor
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/doctors
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Fred",
+    "password": "fred123",
+    "rePassword": "fred123",
+    "contact": "7000000001",
+    "address": "360, Huntington Ave, Boston, MA"
+  }
+}

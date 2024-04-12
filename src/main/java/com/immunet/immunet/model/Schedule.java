@@ -2,31 +2,38 @@ package com.immunet.immunet.model;
 
 import java.util.Date;
 
+import com.immunet.immunet.entity.ScheduleEntity;
+import com.immunet.immunet.exception.BadRequest;
 
 public class Schedule {
-	int id;
+	Integer id;
 	Date scheduledDate;
 	 //static Date scheduledDate= new Date(124, 02, 03 );
 	Date administeredDate;
-	static enum ImmunizationStatus {
+	public static enum ImmunizationStatus {
 		PENDING,
 		DELAYED,
 		COMPLETE;
 	}
-	ImmunizationStatus status= ImmunizationStatus.PENDING; //Initial status 
+	Integer doctorId;
+	Doctor doctor; 
+	ImmunizationStatus status= ImmunizationStatus.PENDING; //Initial status
+	
+	public Schedule() {
+		
+	}
 	
 	public Schedule(Date scheduledDate, Date administeredDate) {
-		super();
 		this.scheduledDate = scheduledDate;
 		this.administeredDate = administeredDate;
 		updateStatus();
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-
-	public void setId(int id) {
+	
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -56,6 +63,10 @@ public class Schedule {
 		this.status = status;
 	}
 	
+	public Integer getDoctorId() {
+		return this.doctorId;
+	}
+	
 	private void updateStatus() {
 		/*
 		 * Is adminDate present => completed
@@ -66,9 +77,9 @@ public class Schedule {
 		if (administeredDate != null) {
 			setStatus(ImmunizationStatus.COMPLETE);
 		} else if (scheduledDate.after(todayDate)) {
-			setStatus(ImmunizationStatus.DELAYED);
-		} else {
 			setStatus(ImmunizationStatus.PENDING);
+		} else {
+			setStatus(ImmunizationStatus.DELAYED);
 		}
 		
 	}
@@ -86,19 +97,45 @@ public class Schedule {
 	}
 		
 
-	public void markComplete(Doctor d) throws Exception {
+	public void markComplete(Doctor d) throws BadRequest {
 		Date todayDate= new Date();
 		if (isComplete()) {
-			throw new Exception("Already completed");	
-		} else if (isDelayed()|| status==ImmunizationStatus.PENDING) {
+			throw new BadRequest("Schedule is already completed");	
+		} else if (isDelayed() || status==ImmunizationStatus.PENDING) {
 			setAdministeredDate(todayDate);
-			updateStatus();
-			
+			this.setDoctor(d);
 		}	
 	}
 	
-	public void save() {
-		
+	public static Schedule load(ScheduleEntity s) {
+		Schedule schedule = new Schedule();
+		schedule.id = s.getId();
+		schedule.setScheduledDate(s.getScheduleDate());
+		schedule.setAdministeredDate(s.getTakenDate());
+		if (s.getDoctor() != null) {
+			schedule.setDoctorId(s.getDoctor().getId());
+			Doctor adminDoctor = new Doctor();
+			adminDoctor.load(s.getDoctor());
+			schedule.setDoctor(adminDoctor);
+		}
+		return schedule;
+	}
+
+	private void setDoctorId(Integer id2) {
+		this.doctorId = id2;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		if(this.doctor == null) {
+			this.setDoctorId(null);
+		} else {
+			this.setDoctorId(doctor.getId());
+		}
+		this.doctor = doctor;
 	}
 
 }

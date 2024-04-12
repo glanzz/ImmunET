@@ -1,0 +1,26 @@
+meta {
+  name: Create Vaccine
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/doctors/2/pets
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno2",
+  "gender": "MALE",
+  "species": "CANINE",
+  "dob": "12-04-2024",
+  "owner": {
+    "name": "Glanz",
+    "gender": "MALE",
+    "contact": "8989898989",
+    "address": "360 Huntington Ave, Boston, MA"
+  }
+  }
+}

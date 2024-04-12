@@ -9,8 +9,13 @@
  */
 package com.immunet.immunet.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import com.immunet.immunet.exception.BadRequest;
+import com.immunet.immunet.exception.NotFound;
 
 public class SingleShotRecord extends ShotRecord {
     private Vaccine vaccine;
@@ -20,6 +25,15 @@ public class SingleShotRecord extends ShotRecord {
         this.vaccine = vaccine;
         this.generateSchedule(dob);
     }
+    
+    public SingleShotRecord(Vaccine vaccine) {
+        this.vaccine = vaccine;
+    }
+    
+    public void setSchedule(Schedule s) {
+    	this.schedule = s;
+    }
+  
 
     @Override
     public boolean isComplete() {
@@ -48,11 +62,43 @@ public class SingleShotRecord extends ShotRecord {
 
     }
 
-    public void markComplete(Doctor doctor) {
-        if (this.schedule != null) {
+    public void markComplete(int scheduleId, Doctor doctor) throws NotFound, BadRequest {
+        if (this.schedule != null && schedule.getId().equals(scheduleId)) {
             this.schedule.markComplete(doctor);
+        } else {
+        	throw new NotFound("Schedule not found !");
         }
     }
+
+	@Override
+	public List<ShotRecord> getShotDTOs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vaccine getVaccine() {
+		// TODO Auto-generated method stub
+		return this.vaccine;
+	}
+
+	
+	public Schedule getSchedule() {
+		// TODO Auto-generated method stub
+		return this.schedule;
+	}
+	
+	public List<Schedule> getSchedules() {
+		List<Schedule> schedules = new ArrayList<Schedule>();
+		schedules.add(getSchedule());
+		return schedules;
+	}
+
+	@Override
+	public void addSchedule(Schedule s) {
+		this.setSchedule(s);
+		
+	}
 
     // Getters and setters omitted for brevity
 }

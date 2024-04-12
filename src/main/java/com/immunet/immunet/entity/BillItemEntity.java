@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="bill_items")
-public class BillItem extends BaseEntity {
+public class BillItemEntity extends BaseEntity {
 	
 	@Column(nullable=false)
 	private Double cost;
@@ -22,13 +22,13 @@ public class BillItem extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bill_id", referencedColumnName = "id", nullable=false)
-    private Bill bill;
+    private BillEntity bill;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "id", nullable=false)
-    private Doctor doctor;
+    private DoctorEntity doctor;
 
-	public BillItem(Double cost, String name, String type) {
+	public BillItemEntity(Double cost, String name, String type) {
 		super();
 		this.cost = cost;
 		this.name = name;
@@ -59,19 +59,19 @@ public class BillItem extends BaseEntity {
 		this.type = type;
 	}
 
-	public Bill getBill() {
+	public BillEntity getBill() {
 		return bill;
 	}
 
-	public void setBill(Bill bill) {
+	public void setBill(BillEntity bill) {
 		this.bill = bill;
 	}
 
-	public Doctor getDoctor() {
+	public DoctorEntity getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(DoctorEntity doctor) {
 		this.doctor = doctor;
 	}
 	

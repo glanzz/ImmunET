@@ -10,7 +10,9 @@ import com.immunet.immunet.entity.EntitySpecies;
 import com.immunet.immunet.entity.PetEntity;
 import com.immunet.immunet.exception.BadRequest;
 import com.immunet.immunet.exception.Conflict;
+import com.immunet.immunet.exception.NotFound;
 import com.immunet.immunet.exception.Unauthorized;
+import com.immunet.immunet.model.Doctor;
 import com.immunet.immunet.model.ImmunizationReport;
 import com.immunet.immunet.model.ImmunizationReportFactory;
 import com.immunet.immunet.model.Owner;
@@ -36,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PetsController {
+public class ImmunizationReportsController {
 	
 	@Autowired
 	DoctorRepository doctorRepository;
@@ -58,103 +60,55 @@ public class PetsController {
 	
 	
 
-	@GetMapping("/pets")
-	public List<PetResponseDTO> getAllPets() {
-		List<PetEntity> pets = petRepository.findAll();
-		List<PetResponseDTO> petsDetails = new ArrayList<PetResponseDTO>();
-		pets.forEach(pet -> {
-			Pet p = petFactory.getPet(pet);
-			Owner o = ownerFactory.getOwner(pet.getOwner());
-			ImmunizationReport report;
-			try {
-				report = immunizationReportFactory.getReport(p);
-			} catch (BadRequest e) {
-				return;
-			}
-			petsDetails.add(getPetCreationResponse(o, p, report));
-		});
-		return petsDetails;
-	}
-	
-	@PostMapping("/doctors/{doctorId}/pets")
-	public PetResponseDTO save(@PathVariable Integer doctorId, @Validated @RequestBody CreatePetDTO petData) throws BadRequest, Unauthorized, Conflict {
+	@GetMapping("/doctors/{doctorId}/pets/{petId}/immunizations")
+	public ImmunizationReportDTO getPetImmunizations(@PathVariable Integer doctorId, @PathVariable Integer petId) throws Unauthorized, NotFound, BadRequest {
 		// Validate access
 		Optional<DoctorEntity> doctor = doctorRepository.findById(doctorId);
 		if(doctor.isEmpty()) {
 			throw new Unauthorized("Unauthorized access !");
 		}
-		
-		// Validate data
-		Species species = null;
-		try {
-			species = Species.valueOf(petData.getSpecies());
-		} catch(IllegalArgumentException e) {
-			throw new BadRequest("Invalid species values given !");
+		Optional<PetEntity> pet = petRepository.findById(petId);
+		if(pet.isEmpty()) {
+			throw new NotFound("Pet not found with given ID");
 		}
-		
-		Pet.Gender gender = null;
-		try {
-			gender = Pet.Gender.valueOf(petData.getGender());
-		} catch(IllegalArgumentException e) {
-			throw new BadRequest("Invalid gender values given !");
-		}
-		
-		// Create entities
-		Owner owner = ownerFactory.getOwner(
-				petData.getOwner().getName(),
-				petData.getOwner().getAddress()
-		);
-
-		Pet pet = petFactory.getPet(
-			petData.getName(),
-			petData.getDob(),
-			gender,
-			species,
-			doctor.get().getId()
-		);
-		
-		ImmunizationReport report = immunizationReportFactory.getReport(pet);
-		
-		petService.petCreation(
-			doctor.get().getUserDetails().getId(),
-			owner,
-			pet,
-			report
-		);
-
-		return getPetCreationResponse(owner, pet, report);
+		Pet reportFor= petFactory.getPet(pet.get());
+		ImmunizationReport report = immunizationReportFactory.getReport(reportFor);
+		return getImmunizationReportResponse(reportFor, report);
 	}
 	
+	@PostMapping("/doctors/{doctorId}/pets/{petId}/schedules/{scheduleId}")
+	public ImmunizationReportDTO administerVaccination(@PathVariable Integer doctorId, @PathVariable Integer petId, @PathVariable Integer scheduleId) throws BadRequest, Unauthorized, Conflict, NotFound {
+		// Validate access
+		Optional<DoctorEntity> doctor = doctorRepository.findById(doctorId);
+		if(doctor.isEmpty()) {
+			throw new Unauthorized("Unauthorized access !");
+		}
+		Optional<PetEntity> pet = petRepository.findById(petId);
+		if(pet.isEmpty()) {
+			throw new NotFound("Pet not found with given ID");
+		}
+		Pet reportFor= petFactory.getPet(pet.get());
 
+		Doctor admin = new Doctor();
+		admin.load(doctor.get());
+
+		ImmunizationReport report = immunizationReportFactory.getReport(reportFor);
+		report.completeShot(scheduleId, admin);
+		report.save(doctor.get().getUserDetails().getId());
+		return getImmunizationReportResponse(reportFor, report);
+	}
+	
+	/*
 	@GetMapping("/bills")
 	public List<BillingItemDTO> getBill() {
 		List<BillingItemDTO> bill = new ArrayList<BillingItemDTO>();
 		BillingItemDTO billItem = new BillingItemDTO("Vaccine1", (float) 200.0, "Service");
 		bill.add(billItem);
 		return bill;
-	}
-
-	/*
-	 * Demonstrates the use of inner class and its creation
-	 * 
-	 * */
-	private PetResponseDTO getPetCreationResponse(Owner o, Pet p, ImmunizationReport report) {
-		
-		PetResponseDTO response = new PetResponseDTO();
-		response.setId(p.getId());
-		response.setName(p.getName());
-		response.setDob(p.getDob());
-		response.setGender(p.getGender().name());
-		response.setSpecies(p.getSpecies().name());
-		
-		PetResponseDTO.CreateOwnerDTO ownerResponse = response.new CreateOwnerDTO(); // Inner class instantiation
-		ownerResponse.setId(o.getId());
-		ownerResponse.setName(o.getName());
-		ownerResponse.setAddress(o.getAddress());
-		
-		response.setOwner(ownerResponse);
-		
-		
+	}*/
+	
+	
+	private ImmunizationReportDTO getImmunizationReportResponse(Pet p, ImmunizationReport report) {
 		ImmunizationReportDTO reportResponse = new ImmunizationReportDTO();
 		reportResponse.setName(p.getName());
 		reportResponse.setDob(p.getDob());
@@ -178,16 +132,12 @@ public class PetsController {
 					doctorResponse.setClinicAddress(schedule.getDoctor().getClinicAddress());
 					scheduleResponse.setDoctor(doctorResponse);
 				}
-				 
 				reportRecordDTO.getSchedules().add(scheduleResponse);
 			});
 			
 			reportResponse.getRecords().add(reportRecordDTO);
 		});
-		
-		response.setReport(reportResponse);
-
-		return response;
-		
+		return reportResponse;
 	}
+
 }

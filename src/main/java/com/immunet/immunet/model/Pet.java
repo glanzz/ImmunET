@@ -3,54 +3,68 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.immunet.immunet.entity.PetEntity;
+import com.immunet.immunet.service.PetService;
+
 
 public class Pet {
-	static enum Gender{
+	public static enum Gender{
 		MALE,
 		FEMALE;
 	}
 
-	int id;
+	Integer id;
 	String name;
 	Date dob;
 	Gender gender;
 	Species species;
+	Integer creatorID;
+	Integer ownerId;
+	PetService service;
 	
 	
 	//pet constructor
-	public Pet(String name, Date dob, Gender gender, Species s) {
+	public Pet(PetService service, String name, Date dob, Gender gender, Species s, Integer creatorId) {
+		this.service = service;
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
 		this.species = s;
+		this.creatorID = creatorId;
 		 
 	}
 	
+	public Pet(PetService service) {
+		this.service = service;
+	}
+	
+	public boolean isPersisted() {
+		return this.id != null;
+	}
+	
 	//saving new pet
-	public void save() {}
-	
-	public boolean immunizationReportExists() {
-		return false;
-	}
-	
-	public List<ShotRecord> getShotRecords() {
-		//Need to mention getShotsDTO list name to return as a list in this method
-		List<ShotRecord> shotRecords = new ArrayList<ShotRecord>();
-		if(immunizationReportExists()) {
-			return null;
-				
-		} else {
-			List<Vaccine> defaultVaccines = new ArrayList<Vaccine>();
-			for(Vaccine defaultVaccine: defaultVaccines) {
-				shotRecords.add(defaultVaccine.getShotRecord(this.dob));
-				
-			}
+	public void save(Integer ownerId, Integer creatorId) {
+		if(isPersisted() ) {
+			return;
 		}
-		return shotRecords;//(getShotsDTO) this already return a list so need to pass it here
+		this.id = service.save(this, ownerId, creatorId);
+		
 	}
+	
+	
+	public void load(PetEntity pet) {
+		this.id = pet.getId();
+		this.setCreatorID(pet.getCreator().getId());
+		this.setName(pet.getName());
+		this.setDob(pet.getDob());
+		this.setGender(Gender.valueOf(pet.getGender().name()));
+		this.setOwnerId(pet.getOwnerId());
+		this.setSpecies(Species.valueOf(pet.getSpecies().name()));
+	}
+	
 		
 	//getters and setters
-	public Species getS() {
+	public Species getSpecies() {
 		return species;
 	}
 	public void setSpecies(Species s) {
@@ -80,6 +94,23 @@ public class Pet {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
+
+	public Integer getCreatorID() {
+		return creatorID;
+	}
+
+	public void setCreatorID(Integer creatorID) {
+		this.creatorID = creatorID;
+	}
+
+	public Integer getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(Integer ownerId) {
+		this.ownerId = ownerId;
+	}
+	
 
 	
 

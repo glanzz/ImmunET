@@ -4,5 +4,4 @@ public enum Species {
 	CANINE,
 	FELINE,
 	AVIAN;
-
 }

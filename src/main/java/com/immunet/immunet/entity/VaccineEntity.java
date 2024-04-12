@@ -13,8 +13,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="vaccines")
-public class Vaccine extends BaseEntity {
-	public Vaccine(String name, Integer frequency, Integer offset, boolean isDefault, String intervals, Species species,
+public class VaccineEntity extends BaseEntity {
+	public VaccineEntity(String name, Integer frequency, Integer offset, boolean isDefault, String intervals,
 			double cost) {
 		super();
 		this.name = name;
@@ -22,11 +22,12 @@ public class Vaccine extends BaseEntity {
 		this.offset = offset;
 		this.isDefault = isDefault;
 		this.intervals = intervals;
-		this.species = species;
 		this.cost = cost;
 	}
 	
-	public Vaccine(String name, String intervals, Species species,
+	public VaccineEntity() {}
+	
+	public VaccineEntity(String name, String intervals, EntitySpecies species,
 			double cost) {
 		super();
 		this.name = name;
@@ -35,7 +36,7 @@ public class Vaccine extends BaseEntity {
 		this.cost = cost;
 	}
 	
-	public Vaccine(String name, String intervals, Species species, boolean isDefault,
+	public VaccineEntity(String name, String intervals, EntitySpecies species, boolean isDefault,
 			double cost) {
 		super();
 		this.name = name;
@@ -64,20 +65,20 @@ public class Vaccine extends BaseEntity {
 	
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Species species;
+	private EntitySpecies species;
 	
 	@Column(nullable=false)
 	private double cost;
 	
 	@ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable=false)
-    private Doctor doctor;
+    private DoctorEntity doctor;
 
-	public Doctor getDoctor() {
+	public DoctorEntity getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(DoctorEntity doctor) {
 		this.doctor = doctor;
 	}
 
@@ -121,12 +122,12 @@ public class Vaccine extends BaseEntity {
 		this.intervals = intervals;
 	}
 
-	public Species getSpecies() {
+	public EntitySpecies getSpecies() {
 		return species;
 	}
 
-	public void setSpecies(Species species) {
-		this.species = species;
+	public void setSpecies(String species) {
+		this.species = EntitySpecies.valueOf(species);
 	}
 
 	public double getCost() {

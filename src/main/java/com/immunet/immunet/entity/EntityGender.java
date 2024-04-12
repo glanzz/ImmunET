@@ -1,6 +1,6 @@
 package com.immunet.immunet.entity;
 
-public enum Gender {
+public enum EntityGender {
 	MALE,
 	FEMALE
 }

@@ -13,37 +13,47 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="owners")
-public class Owner extends BaseEntity {
+public class OwnerEntity extends BaseEntity {
 
 	@Column(name="name", nullable=false)
 	private String name;
 	
-	@Column( nullable=false)
 	private Date dob;
 	
-	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Gender gender;
+	private EntityGender gender;
 	
 	@Column(nullable=false, columnDefinition = "TEXT")
 	private String address;
 	
-	@ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable=false)
-	private User user;
+	
+	@Column(name="created_by", nullable=false)
+	private Integer createdBy;
 
-	public User getUser() {
+	@ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "created_by", insertable=false, updatable=false, nullable=false)
+	private UserEntity user;
+
+	public UserEntity getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserEntity user) {
 		this.user = user;
 	}
-
-	public Owner(String name, Date dob, Gender gender, String address) {
+	
+	OwnerEntity(){
+		
+	}
+	public OwnerEntity(String name, Date dob, EntityGender gender, String address) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
+		this.address = address;
+	}
+	
+	public OwnerEntity(String name, String address) {
+		this.name = name;
 		this.address = address;
 	}
 
@@ -63,11 +73,11 @@ public class Owner extends BaseEntity {
 		this.dob = dob;
 	}
 
-	public Gender getGender() {
+	public EntityGender getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(EntityGender gender) {
 		this.gender = gender;
 	}
 
@@ -77,6 +87,14 @@ public class Owner extends BaseEntity {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
 	}
 
 

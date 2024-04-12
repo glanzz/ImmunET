@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="pets")
-public class Pet extends BaseEntity {
+public class PetEntity extends BaseEntity {
 	@Column(nullable=false)
 	private String name;
 	
@@ -23,26 +23,36 @@ public class Pet extends BaseEntity {
 	
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Gender gender;
+	private EntityGender gender;
 	
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Species species;
+	private EntitySpecies species;
 	
+	
+	@Column(name="owner_id", nullable=false)
+	Integer ownerId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable=false)
-    private Owner owner;
+    @JoinColumn(name = "owner_id",insertable=false, updatable=false,  nullable=false)
+    private OwnerEntity owner;
 	
+	@Column(name="created_by", nullable=false)
+	Integer createdBy;
 
 	@ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable=false)
-    private User creator;
+    @JoinColumn(name = "created_by", insertable=false, updatable=false, nullable=false)
+    private UserEntity creator;
 
-	public Pet(String name, Date dob, Gender gender, Species species) {
+	public PetEntity(String name, Date dob, EntityGender gender, EntitySpecies species) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
 		this.species = species;
+	}
+	
+	public PetEntity() {
+		
 	}
 	
 	
@@ -58,35 +68,53 @@ public class Pet extends BaseEntity {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-	public Gender getGender() {
+	public EntityGender getGender() {
 		return gender;
 	}
-	public void setGender(Gender gender) {
+	public void setGender(EntityGender gender) {
 		this.gender = gender;
 	}
-	public Species getSpecies() {
+	public EntitySpecies getSpecies() {
 		return species;
 	}
-	public void setSpecies(Species species) {
+	public void setSpecies(EntitySpecies species) {
 		this.species = species;
 	}
-	public Owner getOwner() {
+	public OwnerEntity getOwner() {
 		return owner;
 	}
 
 
-	public void setOwner(Owner owner) {
+	public void setOwner(OwnerEntity owner) {
 		this.owner = owner;
 	}
 
 
-	public User getCreator() {
+	public UserEntity getCreator() {
 		return creator;
 	}
 
 
-	public void setCreator(User user) {
+	public void setCreator(UserEntity user) {
 		this.creator = user;
 	}
+
+	public Integer getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(Integer ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	
 
 }

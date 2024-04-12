@@ -1,0 +1,23 @@
+meta {
+  name: Create Pet
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:8080/doctors/2/vaccines
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Covaccine",
+    "frequency": 2,
+    "cost": 12,
+    "offset": 100,
+    "intervals": "11",
+    "species": "CANINE",
+    "mandatory": true
+  }
+}

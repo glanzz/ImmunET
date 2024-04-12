@@ -11,34 +11,34 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="bills")
-public class Bill extends BaseEntity {
+public class BillEntity extends BaseEntity {
 
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Status status = Status.PENDING;
+	private EntityStatus status = EntityStatus.PENDING;
 	
 	@Column(nullable=false)
 	private Double taxPercent;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bill_for", referencedColumnName = "id", nullable=false)
-    private Pet billFor;
+    private PetEntity billFor;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bill_by", referencedColumnName = "id", nullable=false)
-    private User billBy;
+    private UserEntity billBy;
 	
-	public Bill(Status status, Double taxPercent) {
+	public BillEntity(EntityStatus status, Double taxPercent) {
 		super();
 		this.status = status;
 		this.taxPercent = taxPercent;
 	}
 	
-	public Status getStatus() {
+	public EntityStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(EntityStatus status) {
 		this.status = status;
 	}
 
@@ -50,19 +50,19 @@ public class Bill extends BaseEntity {
 		this.taxPercent = taxPercent;
 	}
 
-	public Pet getBillFor() {
+	public PetEntity getBillFor() {
 		return billFor;
 	}
 
-	public void setBillFor(Pet pet) {
+	public void setBillFor(PetEntity pet) {
 		this.billFor = pet;
 	}
 
-	public User getBillBy() {
+	public UserEntity getBillBy() {
 		return billBy;
 	}
 
-	public void setCreator(User creator) {
+	public void setCreator(UserEntity creator) {
 		this.billBy = creator;
 	}
 
