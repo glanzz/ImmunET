@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.immunet.immunet.exception.BadRequest;
+import com.immunet.immunet.exception.NotFound;
 
 public class MultiShotRecord extends ShotRecord {
     private Vaccine vaccine;
@@ -73,11 +74,11 @@ public class MultiShotRecord extends ShotRecord {
         }
     }
 
-    public void markComplete(int scheduleId, Doctor doctor) throws Exception {
+    public void markComplete(int scheduleId, Doctor doctor) throws NotFound, BadRequest {
         Schedule scheduleToMark = this.schedules.stream()
             .filter(s -> s.getId() == scheduleId)
             .findFirst()
-            .orElseThrow(() -> new BadRequest("Schedule not found"));
+            .orElseThrow(() -> new NotFound("Schedule not found"));
         scheduleToMark.markComplete(doctor);
     }
 

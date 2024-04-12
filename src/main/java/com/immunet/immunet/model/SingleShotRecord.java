@@ -14,6 +14,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.immunet.immunet.exception.BadRequest;
+import com.immunet.immunet.exception.NotFound;
+
 public class SingleShotRecord extends ShotRecord {
     private Vaccine vaccine;
     private Schedule schedule;
@@ -59,9 +62,11 @@ public class SingleShotRecord extends ShotRecord {
 
     }
 
-    public void markComplete(Doctor doctor) throws Exception {
-        if (this.schedule != null) {
+    public void markComplete(int scheduleId, Doctor doctor) throws NotFound, BadRequest {
+        if (this.schedule != null && schedule.getId().equals(scheduleId)) {
             this.schedule.markComplete(doctor);
+        } else {
+        	throw new NotFound("Schedule not found !");
         }
     }
 

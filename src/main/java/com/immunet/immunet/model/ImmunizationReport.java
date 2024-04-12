@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.immunet.immunet.exception.BadRequest;
+import com.immunet.immunet.exception.NotFound;
 import com.immunet.immunet.service.ImmunizationReportService;
 
 /**
@@ -63,21 +64,18 @@ public class ImmunizationReport {
     private boolean shotRecordExists(Vaccine vaccine) {
         return this.shotRecords.stream().anyMatch(record -> record.getVaccine().getId().equals(vaccine.getId()));
     }
+    
 
     // Assume a method in ShotRecord to get the associated vaccine
-    public void completeShot(int scheduleId, Doctor signedDoctor) {
-        this.shotRecords.stream()
-                        .map(record -> (record instanceof MultiShotRecord) ? 
-                                       (MultiShotRecord) record : null)
-                        .filter(Objects::nonNull)
-                        .forEach(record -> {
-							try {
-								record.markComplete(scheduleId, signedDoctor);
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						});
+    public void completeShot(int scheduleId, Doctor signedDoctor) throws NotFound, BadRequest {
+    	for(ShotRecord shotRecord: this.shotRecords) {
+    		Schedule s = shotRecord.getSchedules().stream().filter(schedule -> schedule.getId().equals(scheduleId)).findFirst().get();
+    		if(s != null) {
+    			shotRecord.markComplete(scheduleId, signedDoctor);
+    			return;
+    		}
+    	}
+    	throw new NotFound("No Schedule found with the given ID");
     }
     
     

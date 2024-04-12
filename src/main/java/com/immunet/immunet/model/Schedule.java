@@ -3,6 +3,7 @@ package com.immunet.immunet.model;
 import java.util.Date;
 
 import com.immunet.immunet.entity.ScheduleEntity;
+import com.immunet.immunet.exception.BadRequest;
 
 public class Schedule {
 	Integer id;
@@ -75,9 +76,9 @@ public class Schedule {
 		if (administeredDate != null) {
 			setStatus(ImmunizationStatus.COMPLETE);
 		} else if (scheduledDate.after(todayDate)) {
-			setStatus(ImmunizationStatus.DELAYED);
-		} else {
 			setStatus(ImmunizationStatus.PENDING);
+		} else {
+			setStatus(ImmunizationStatus.DELAYED);
 		}
 		
 	}
@@ -95,13 +96,12 @@ public class Schedule {
 	}
 		
 
-	public void markComplete(Doctor d) throws Exception {
+	public void markComplete(Doctor d) throws BadRequest {
 		Date todayDate= new Date();
 		if (isComplete()) {
-			throw new Exception("Already completed");	
-		} else if (isDelayed()|| status==ImmunizationStatus.PENDING) {
+			throw new BadRequest("Schedule is already completed");	
+		} else if (isDelayed() || status==ImmunizationStatus.PENDING) {
 			setAdministeredDate(todayDate);
-			updateStatus();
 			this.setDoctorId(d.getId());
 		}	
 	}
@@ -119,7 +119,6 @@ public class Schedule {
 
 	private void setDoctorId(Integer id2) {
 		this.doctorId = id2;
-		
 	}
 
 }

@@ -11,6 +11,7 @@ import com.immunet.immunet.exception.BadRequest;
 import com.immunet.immunet.exception.Conflict;
 import com.immunet.immunet.exception.NotFound;
 import com.immunet.immunet.exception.Unauthorized;
+import com.immunet.immunet.model.Doctor;
 import com.immunet.immunet.model.ImmunizationReport;
 import com.immunet.immunet.model.ImmunizationReportFactory;
 import com.immunet.immunet.model.Owner;
@@ -74,56 +75,29 @@ public class ImmunizationReportsController {
 		return getImmunizationReportResponse(reportFor, report);
 	}
 	
-	/*@PostMapping("/doctors/{doctorId}/pets")
-	public PetResponseDTO save(@PathVariable Integer doctorId, @Validated @RequestBody CreatePetDTO petData) throws BadRequest, Unauthorized, Conflict {
+	@PostMapping("/doctors/{doctorId}/pets/{petId}/schedules/{scheduleId}")
+	public ImmunizationReportDTO administerVaccination(@PathVariable Integer doctorId, @PathVariable Integer petId, @PathVariable Integer scheduleId) throws BadRequest, Unauthorized, Conflict, NotFound {
 		// Validate access
 		Optional<DoctorEntity> doctor = doctorRepository.findById(doctorId);
 		if(doctor.isEmpty()) {
 			throw new Unauthorized("Unauthorized access !");
 		}
-		
-		// Validate data
-		Species species = null;
-		try {
-			species = Species.valueOf(petData.getSpecies());
-		} catch(IllegalArgumentException e) {
-			throw new BadRequest("Invalid species values given !");
+		Optional<PetEntity> pet = petRepository.findById(petId);
+		if(pet.isEmpty()) {
+			throw new NotFound("Pet not found with given ID");
 		}
-		
-		Pet.Gender gender = null;
-		try {
-			gender = Pet.Gender.valueOf(petData.getGender());
-		} catch(IllegalArgumentException e) {
-			throw new BadRequest("Invalid gender values given !");
-		}
-		
-		// Create entities
-		Owner owner = ownerFactory.getOwner(
-				petData.getOwner().getName(),
-				petData.getOwner().getAddress()
-		);
+		Pet reportFor= petFactory.getPet(pet.get());
 
-		Pet pet = petFactory.getPet(
-			petData.getName(),
-			petData.getDob(),
-			gender,
-			species,
-			doctor.get().getId()
-		);
-		
-		ImmunizationReport report = immunizationReportFactory.getReport(pet);
-		
-		petService.petCreation(
-			doctor.get().getUserDetails().getId(),
-			owner,
-			pet,
-			report
-		);
+		Doctor admin = new Doctor();
+		admin.load(doctor.get());
 
-		return getPetCreationResponse(owner, pet, report);
+		ImmunizationReport report = immunizationReportFactory.getReport(reportFor);
+		report.completeShot(scheduleId, admin);
+		report.save(doctor.get().getUserDetails().getId());
+		return getImmunizationReportResponse(reportFor, report);
 	}
 	
-
+	/*
 	@GetMapping("/bills")
 	public List<BillingItemDTO> getBill() {
 		List<BillingItemDTO> bill = new ArrayList<BillingItemDTO>();
