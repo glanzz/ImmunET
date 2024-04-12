@@ -1,11 +1,11 @@
 meta {
-  name: Administer Immunizations
+  name: Fetch All Doctors
   type: http
-  seq: 10
+  seq: 6
 }
 
 get {
-  url: http://localhost:8080/doctors/2/pets/3/immunizations
+  url: http://localhost:8080/doctors
   body: json
   auth: none
 }

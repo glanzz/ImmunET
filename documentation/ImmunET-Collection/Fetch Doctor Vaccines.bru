@@ -1,13 +1,17 @@
 meta {
-  name: Fetch All Immunizations
+  name: Fetch Doctor Vaccines 
   type: http
-  seq: 9
+  seq: 4
 }
 
 get {
-  url: http://localhost:8080/pets
+  url: http://localhost:8080/doctors/3/vaccines?species=FELINE
   body: json
   auth: none
+}
+
+query {
+  species: FELINE
 }
 
 body:json {
