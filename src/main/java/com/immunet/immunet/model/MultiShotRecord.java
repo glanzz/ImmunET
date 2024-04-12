@@ -90,10 +90,13 @@ public class MultiShotRecord extends ShotRecord {
 	@Override
 	public Vaccine getVaccine() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.vaccine;
+	}
+	
+	public List<Schedule> getSchedules() {
+		return this.schedules;
 	}
 
-	@Override
 	public Schedule getSchedule() {
 		// TODO Auto-generated method stub
 		return null;

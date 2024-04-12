@@ -18,18 +18,20 @@ public class OwnerEntity extends BaseEntity {
 	@Column(name="name", nullable=false)
 	private String name;
 	
-	@Column( nullable=false)
 	private Date dob;
 	
-	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private EntityGender gender;
 	
 	@Column(nullable=false, columnDefinition = "TEXT")
 	private String address;
 	
+	
+	@Column(name="created_by", nullable=false)
+	private Integer createdBy;
+
 	@ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable=false)
+    @JoinColumn(name = "created_by", insertable=false, updatable=false, nullable=false)
 	private UserEntity user;
 
 	public UserEntity getUser() {
@@ -39,11 +41,19 @@ public class OwnerEntity extends BaseEntity {
 	public void setUser(UserEntity user) {
 		this.user = user;
 	}
-
+	
+	OwnerEntity(){
+		
+	}
 	public OwnerEntity(String name, Date dob, EntityGender gender, String address) {
 		this.name = name;
 		this.dob = dob;
 		this.gender = gender;
+		this.address = address;
+	}
+	
+	public OwnerEntity(String name, String address) {
+		this.name = name;
 		this.address = address;
 	}
 
@@ -77,6 +87,14 @@ public class OwnerEntity extends BaseEntity {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
 	}
 
 

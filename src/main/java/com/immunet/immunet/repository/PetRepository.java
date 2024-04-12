@@ -6,5 +6,6 @@ import com.immunet.immunet.entity.PetEntity;
 
 
 public interface PetRepository extends JpaRepository<PetEntity, Integer>{
+	
 
 }

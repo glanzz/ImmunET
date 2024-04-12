@@ -9,7 +9,7 @@ public class Schedule {
 	Date scheduledDate;
 	 //static Date scheduledDate= new Date(124, 02, 03 );
 	Date administeredDate;
-	static enum ImmunizationStatus {
+	public static enum ImmunizationStatus {
 		PENDING,
 		DELAYED,
 		COMPLETE;
@@ -29,6 +29,10 @@ public class Schedule {
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getScheduledDate() {
@@ -98,12 +102,8 @@ public class Schedule {
 		} else if (isDelayed()|| status==ImmunizationStatus.PENDING) {
 			setAdministeredDate(todayDate);
 			updateStatus();
-			
+			this.setDoctorId(d.getId());
 		}	
-	}
-	
-	public void save() {
-		
 	}
 	
 	public static Schedule load(ScheduleEntity s) {

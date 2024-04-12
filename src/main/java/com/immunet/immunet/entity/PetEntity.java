@@ -29,13 +29,19 @@ public class PetEntity extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private EntitySpecies species;
 	
+	
+	@Column(name="owner_id", nullable=false)
+	Integer ownerId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable=false)
+    @JoinColumn(name = "owner_id",insertable=false, updatable=false,  nullable=false)
     private OwnerEntity owner;
 	
+	@Column(name="created_by", nullable=false)
+	Integer createdBy;
 
 	@ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable=false)
+    @JoinColumn(name = "created_by", insertable=false, updatable=false, nullable=false)
     private UserEntity creator;
 
 	public PetEntity(String name, Date dob, EntityGender gender, EntitySpecies species) {
@@ -43,6 +49,10 @@ public class PetEntity extends BaseEntity {
 		this.dob = dob;
 		this.gender = gender;
 		this.species = species;
+	}
+	
+	public PetEntity() {
+		
 	}
 	
 	
@@ -88,5 +98,23 @@ public class PetEntity extends BaseEntity {
 	public void setCreator(UserEntity user) {
 		this.creator = user;
 	}
+
+	public Integer getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(Integer ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	
 
 }

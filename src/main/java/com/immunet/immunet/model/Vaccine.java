@@ -166,9 +166,22 @@ public class Vaccine {
 		this.setIntervals(Vaccine.parseIntervals(vaccine.getIntervals()));
 		this.setName(vaccine.getName());
 		this.setOffset(vaccine.getOffset());
+		this.setFrequency(vaccine.getFrequency());
 		this.setSpecies(Species.valueOf(vaccine.getSpecies().name()));
 		this.setDoctorId(vaccine.getDoctor().getId());
 	}
+	
+	
+	public String toString() {
+		return "Vaccine:" + this.getName() +","+ this.getCost() + "," + this.getFrequency()+ ";";
+	}
+
+
+	public ShotRecord getShotRecord(Date dob) {
+		// Load from existing schedules the Shotrecord
+		return ShotFactory.getInstance().getShotRecord(this, dob);
+	}
+	
 	
 	
 	public boolean requiresMultipleShots() {

@@ -9,6 +9,7 @@
  */
 package com.immunet.immunet.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,10 +77,16 @@ public class SingleShotRecord extends ShotRecord {
 		return this.vaccine;
 	}
 
-	@Override
+	
 	public Schedule getSchedule() {
 		// TODO Auto-generated method stub
 		return this.schedule;
+	}
+	
+	public List<Schedule> getSchedules() {
+		List<Schedule> schedules = new ArrayList<Schedule>();
+		schedules.add(getSchedule());
+		return schedules;
 	}
 
 	@Override

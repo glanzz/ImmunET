@@ -5,19 +5,22 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/doctors/2/vaccines
+  url: http://localhost:8080/doctors/2/pets
   body: json
   auth: none
 }
 
 body:json {
   {
-    "name": "Covaccine",
-    "frequency": 2,
-    "cost": 12,
-    "offset": 100,
-    "intervals": "11",
-    "species": "CANINE",
-    "mandatory": true
+    "name": "Bruno2",
+  "gender": "MALE",
+  "species": "CANINE",
+  "dob": "12-04-2024",
+  "owner": {
+    "name": "Glanz",
+    "gender": "MALE",
+    "contact": "8989898989",
+    "address": "360 Huntington Ave, Boston, MA"
+  }
   }
 }

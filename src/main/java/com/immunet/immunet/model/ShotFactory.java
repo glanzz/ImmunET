@@ -2,8 +2,11 @@ package com.immunet.immunet.model;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.immunet.immunet.entity.ScheduleEntity;
 
+@Component
 public class ShotFactory {
 
     private static ShotFactory instance = new ShotFactory();

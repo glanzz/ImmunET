@@ -20,18 +20,31 @@ public class ImmunizationReport {
     public ImmunizationReport(ImmunizationReportService service, Pet pet) throws BadRequest {
         this.pet = pet;
         this.service = service;
+        this.shotRecords = new ArrayList<ShotRecord>();
         if (pet.isPersisted()) {
         	this.load();
         } else {
         	this.loadDefaultRecords(pet.getCreatorID());
         }
     }
+    
+    public Pet getPet() {
+    	return this.pet;
+    }
+    
+    public List<ShotRecord> getShotRecords() {
+    	return this.shotRecords;
+    }
 
     public void load() throws BadRequest {
 		// Load from pet ID the immunization reports from repository of schedules
     	service.getExistingSchedules(pet).stream().forEach(s -> this.shotRecords.add(s));
 	}
-
+    
+    public void save(Integer userId) {
+    	service.save(this, userId);
+    }
+    
 	public void addShotRecord(Vaccine vaccine) throws BadRequest {
         if (shotRecordExists(vaccine)) {
             throw new BadRequest("Shot record for vaccine " + vaccine.getName() + " already exists.");
@@ -78,30 +91,28 @@ public class ImmunizationReport {
     // Get a list of shot records scheduled for today
     public List<ShotRecord> getTodaysShots() {
         Date today = new Date(); // Today's date
-        return shotRecords.stream()
-                                  .filter(record -> record.getSchedule() != null &&
-                                                    record.getSchedule().getScheduledDate().equals(today))
-                                  .collect(Collectors.toList());
+        return shotRecords.stream().filter(record -> {
+        	return record.getSchedules().stream().anyMatch(schedule -> schedule.getScheduledDate().equals(today));
+        }).collect(Collectors.toList());
+        
     }
 
     // Get a list of shot records that were completed today
     public List<ShotRecord> getTodaysCompletedShots() {
         Date today = new Date(); // Today's date
-        return shotRecords.stream()
-                                  .filter(record -> record.getSchedule() != null &&
-                                                    record.getSchedule().getAdministeredDate() != null &&
-                                                    record.getSchedule().getAdministeredDate().equals(today))
-                                  .collect(Collectors.toList());
+        return shotRecords.stream().filter(record -> {
+        	return record.getSchedules().stream().anyMatch(schedule -> schedule.getScheduledDate().equals(today) && schedule.isComplete());
+        }).collect(Collectors.toList());
     }
 
     // Get a list of shot records that are scheduled for the future
     public List<ShotRecord> getUpcomingScheduledShots() {
         Date today = new Date(); // Today's date
-        return shotRecords.stream()
-                                  .filter(record -> record.getSchedule() != null &&
-                                                    record.getSchedule().getScheduledDate().after(today))
-                                  .collect(Collectors.toList());
+        return shotRecords.stream().filter(record -> {
+        	return record.getSchedules().stream().anyMatch(schedule -> schedule.getScheduledDate().after(today));
+        }).collect(Collectors.toList());
     }
+    
 
     // Other methods like load, create, and getters for shot records omitted for brevity
 }

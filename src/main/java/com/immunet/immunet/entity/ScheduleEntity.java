@@ -20,25 +20,41 @@ public class ScheduleEntity extends BaseEntity {
 	
 	private Date takenDate;
 	
+	
+	@Column(name="pet_id", nullable=false)
+	Integer petId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id", referencedColumnName = "id", nullable=false)
+    @JoinColumn(name = "pet_id", insertable=false, updatable=false,  nullable=false)
     private PetEntity pet;
 	
+	@Column(name="vaccine_id", nullable=false)
+	Integer vaccineId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vaccine_id", referencedColumnName = "id", nullable=false)
+    @JoinColumn(name = "vaccine_id", insertable=false, updatable=false, nullable=false)
     private VaccineEntity vaccine;
 	
+	@Column(name="given_by")
+	Integer doctorId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "given_by", referencedColumnName = "id", nullable=false)
+    @JoinColumn(name = "given_by",insertable=false, updatable=false)
     private DoctorEntity doctor;
 	
+	@Column(name="created_by", nullable=false)
+	Integer createdBy;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", referencedColumnName = "id", nullable=false)
+    @JoinColumn(name = "created_by", insertable=false, updatable=false, nullable=false)
     private UserEntity user;
 	
 	public ScheduleEntity(Date scheduleDate, VaccineEntity v) {
 		this.scheduleDate = scheduleDate;
 		this.vaccine = v;
+	}
+	
+	public ScheduleEntity() {
 	}
 	
 	public Date getScheduleDate() {
@@ -87,6 +103,38 @@ public class ScheduleEntity extends BaseEntity {
 
 	public void setUser(UserEntity user) {
 		this.user = user;
+	}
+
+	public Integer getPetId() {
+		return petId;
+	}
+
+	public void setPetId(Integer petId) {
+		this.petId = petId;
+	}
+
+	public Integer getVaccineId() {
+		return vaccineId;
+	}
+
+	public void setVaccineId(Integer vaccineId) {
+		this.vaccineId = vaccineId;
+	}
+
+	public Integer getDoctorId() {
+		return doctorId;
+	}
+
+	public void setDoctorId(Integer doctorId) {
+		this.doctorId = doctorId;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	

@@ -6,14 +6,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotNull;
 
-public class CreatePetDTO {
+public class CreatePetResponseDTO {
 	
 	public class CreateOwnerDTO {
+		
+		@NotNull
+		Integer id;
 		@NotNull
 		String name;
 		@NotNull
 		String address;
 
+		public Integer getId() {
+			return id;
+		}
+		public void setId(Integer id) {
+			this.id = id;
+		}
 		public String getName() {
 			return name;
 		}
@@ -30,6 +39,9 @@ public class CreatePetDTO {
 	}
 	
 	@NotNull
+	Integer id;
+	
+	@NotNull
 	String name;
 	
 	@NotNull
@@ -44,6 +56,17 @@ public class CreatePetDTO {
 	
 	@NotNull
 	CreateOwnerDTO owner;
+	
+	@NotNull
+	ImmunizationReportDTO report;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -83,6 +106,14 @@ public class CreatePetDTO {
 
 	public void setOwner(CreateOwnerDTO owner) {
 		this.owner = owner;
+	}
+
+	public ImmunizationReportDTO getReport() {
+		return report;
+	}
+
+	public void setReport(ImmunizationReportDTO report) {
+		this.report = report;
 	}
 	
 	
