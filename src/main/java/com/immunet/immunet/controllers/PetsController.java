@@ -3,6 +3,7 @@ import com.immunet.immunet.dto.BillingItemDTO;
 import com.immunet.immunet.dto.CreatePetDTO;
 import com.immunet.immunet.dto.PetResponseDTO;
 import com.immunet.immunet.dto.CreateVaccineDTO;
+import com.immunet.immunet.dto.DoctorDTO;
 import com.immunet.immunet.dto.ImmunizationReportDTO;
 import com.immunet.immunet.entity.DoctorEntity;
 import com.immunet.immunet.entity.EntitySpecies;
@@ -170,6 +171,14 @@ public class PetsController {
 				scheduleResponse.setId(schedule.getId());
 				scheduleResponse.setScheduledDate(schedule.getScheduledDate());
 				scheduleResponse.setStatus(schedule.getStatus().name());
+				if(schedule.getDoctor() != null) {
+					DoctorDTO doctorResponse = new DoctorDTO();
+					doctorResponse.setId(schedule.getDoctor().getId());
+					doctorResponse.setName(schedule.getDoctor().getName());
+					doctorResponse.setClinicAddress(schedule.getDoctor().getClinicAddress());
+					scheduleResponse.setDoctor(doctorResponse);
+				}
+				 
 				reportRecordDTO.getSchedules().add(scheduleResponse);
 			});
 			

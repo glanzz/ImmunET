@@ -109,7 +109,7 @@ public class ImmunizationReportService {
 				}
 				scheduleEntity.setScheduleDate(schedule.getScheduledDate());
 				scheduleEntity.setTakenDate(schedule.getAdministeredDate());
-				scheduleEntity.setDoctorId(scheduleEntity.getDoctorId());
+				scheduleEntity.setDoctorId(schedule.getDoctorId());
 				scheduleDAO.save(scheduleEntity);
 				schedule.setId(scheduleEntity.getId());
 			});

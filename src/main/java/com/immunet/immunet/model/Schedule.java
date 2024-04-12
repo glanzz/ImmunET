@@ -16,6 +16,7 @@ public class Schedule {
 		COMPLETE;
 	}
 	Integer doctorId;
+	Doctor doctor; 
 	ImmunizationStatus status= ImmunizationStatus.PENDING; //Initial status
 	
 	public Schedule() {
@@ -102,7 +103,7 @@ public class Schedule {
 			throw new BadRequest("Schedule is already completed");	
 		} else if (isDelayed() || status==ImmunizationStatus.PENDING) {
 			setAdministeredDate(todayDate);
-			this.setDoctorId(d.getId());
+			this.setDoctor(d);
 		}	
 	}
 	
@@ -113,12 +114,28 @@ public class Schedule {
 		schedule.setAdministeredDate(s.getTakenDate());
 		if (s.getDoctor() != null) {
 			schedule.setDoctorId(s.getDoctor().getId());
+			Doctor adminDoctor = new Doctor();
+			adminDoctor.load(s.getDoctor());
+			schedule.setDoctor(adminDoctor);
 		}
 		return schedule;
 	}
 
 	private void setDoctorId(Integer id2) {
 		this.doctorId = id2;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		if(this.doctor == null) {
+			this.setDoctorId(null);
+		} else {
+			this.setDoctorId(doctor.getId());
+		}
+		this.doctor = doctor;
 	}
 
 }

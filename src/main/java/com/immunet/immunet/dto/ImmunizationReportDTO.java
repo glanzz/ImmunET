@@ -21,6 +21,8 @@ public class ImmunizationReportDTO {
 		
 		@NotNull
 		String status;
+		
+		DoctorDTO doctor;
 
 		public Integer getId() {
 			return id;
@@ -52,6 +54,14 @@ public class ImmunizationReportDTO {
 
 		public void setStatus(String status) {
 			this.status = status;
+		}
+
+		public DoctorDTO getDoctor() {
+			return doctor;
+		}
+
+		public void setDoctor(DoctorDTO doctor) {
+			this.doctor = doctor;
 		}
 		
 	}
