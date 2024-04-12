@@ -3,10 +3,10 @@ Final Project for CSYE 6200 - Immunization Record Application
 
 
 ## CodeBase UML
-![Code UML](/docs/UML/PUML.svg)
+![Code UML](/documentation/UML/PUML.svg)
 
 ## ER-Diagram
-![ER Diagram](/docs/ER/ER-IMMUNET-Light.png)
+![ER Diagram](/documentation/ER/ER-IMMUNET-Light.png)
 
 
 ## Models
