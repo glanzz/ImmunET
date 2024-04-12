@@ -2,6 +2,9 @@
 Final Project for CSYE 6200 - Immunization Record Application
 
 
+## Repository UML
+![Code UML](/docs/UML/PUML.png)
+
 ## ER-Diagram
 ![ER Diagram](/docs/ER/ER-IMMUNET-Light.png)
 
