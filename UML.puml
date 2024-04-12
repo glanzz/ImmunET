@@ -1,0 +1,946 @@
+@startuml
+interface com.immunet.immunet.dao.EntityDAO {
+~ List<T> get()
+~ T get(Integer)
+~ void save(T)
+~ void delete(Integer)
+}
+
+class com.immunet.immunet.exception.NotFound {
+- {static} long serialVersionUID
+- {static} HttpStatus status
++ HttpStatus getStatus()
+}
+
+
+class com.immunet.immunet.model.ImmunizationReport {
+- List<ShotRecord> shotRecords
+- Pet pet
+- ImmunizationReportService service
++ Pet getPet()
++ List<ShotRecord> getShotRecords()
++ void load()
++ void save(Integer)
++ void addShotRecord(Vaccine)
++ void loadDefaultRecords(Integer)
+- boolean shotRecordExists(Vaccine)
++ void completeShot(int,Doctor)
++ List<ShotRecord> getCompletedShotsTillDate()
++ List<ShotRecord> getTodaysShots()
++ List<ShotRecord> getTodaysCompletedShots()
++ List<ShotRecord> getUpcomingScheduledShots()
+}
+
+
+class com.immunet.immunet.dto.BillingItemDTO {
+~ String name
+~ float price
+~ String type
++ String getName()
++ void setName(String)
++ float getPrice()
++ void setPrice(float)
++ String getType()
++ void setType(String)
+}
+
+
+class com.immunet.immunet.model.PetFactory {
+~ PetService service
++ Pet getPet()
++ Pet getPet(String,Date,Gender,Species,Integer)
++ Pet getPet(PetEntity)
+}
+
+
+class com.immunet.immunet.dto.CreateVaccineDTO {
+~ String name
+~ Integer frequency
+~ Double cost
+~ Integer offset
+~ String intervals
+~ String species
+~ boolean mandatory
++ String getName()
++ void setName(String)
++ Integer getFrequency()
++ void setFrequency(Integer)
++ Double getCost()
++ void setCost(Double)
++ Integer getOffset()
++ void setOffset(Integer)
++ String getIntervals()
++ void setIntervals(String)
++ String getSpecies()
++ void setSpecies(String)
++ boolean isMandatory()
++ void setMandatory(boolean)
+}
+
+
+enum com.immunet.immunet.entity.EntityGender {
++  MALE
++  FEMALE
+}
+
+enum com.immunet.immunet.entity.EntitySpecies {
++  AVIAN
++  CANINE
++  FELINE
+}
+
+class com.immunet.immunet.model.Doctor {
+~ DoctorService doctorService
+~ Integer id
+~ String clinicAddress
+~ Double serviceCost
++ Integer getId()
++ String getClinicAddress()
++ void setClinicAddress(String)
++ Double getServiceCost()
++ void setServiceCost(Double)
+- boolean isPersisted()
++ void save()
++ void load(DoctorEntity)
+}
+
+
+class com.immunet.immunet.model.MultiShotRecord {
+- Vaccine vaccine
+- List<Schedule> schedules
++ void addSchedule(Schedule)
++ boolean isComplete()
++ void generateSchedule(Date)
++ void markComplete(int,Doctor)
++ List<ShotRecord> getShotDTOs()
++ Vaccine getVaccine()
++ List<Schedule> getSchedules()
++ Schedule getSchedule()
+}
+
+
+class com.immunet.immunet.service.ImmunizationReportService {
+- UserDAO userDAO
+- DoctorDAO doctorDAO
+- PetRepository petRepository
+- VaccineRepository vaccineRepository
+- VaccineFactory vaccineFactory
+- ShotFactory shotFactory
+- ScheduleDAO scheduleDAO
+- ScheduleRepository scheduleRepository
++ List<Vaccine> getDefaultVaccines(Pet)
++ Collection<ShotRecord> getExistingSchedules(Pet)
++ void save(ImmunizationReport,Integer)
+}
+
+
+class com.immunet.immunet.model.ShotFactory {
+- {static} ShotFactory instance
++ {static} ShotFactory getInstance()
++ ShotRecord getShotRecord(Vaccine,Date)
++ ShotRecord getShotRecord(Vaccine)
+}
+
+
+class com.immunet.immunet.model.VaccineFactory {
+~ VaccineService vaccineService
+~ VaccineRepository vaccineRepository
++ Vaccine getVaccine(VaccineEntity)
++ Vaccine getVaccine(String,Species,int,String,int,int)
+}
+
+
+class com.immunet.immunet.model.Vaccine {
+~ Integer id
+~ String name
+~ Integer frequency
+~ List<Integer> intervals
+~ Integer offset
+~ boolean defaultVaccine
+~ Double cost
+~ Integer doctorId
+~ VaccineService vaccineService
+~ Species species
++ boolean isDefaultVaccine()
++ void setDefaultVaccine(boolean)
++ Integer getId()
++ String getName()
++ void setName(String)
++ Integer getFrequency()
++ void setFrequency(Integer)
++ List<Integer> getIntervals()
++ String getIntervalsString()
++ void setIntervals(List<Integer>)
++ int getOffset()
++ void setOffset(int)
++ Species getSpecies()
++ void setSpecies(Species)
++ Double getCost()
++ void setCost(Double)
++ Integer getDoctorId()
++ void setDoctorId(Integer)
+~ boolean isDefault()
++ {static} List<Integer> parseIntervals(String)
+- boolean validateFrequency()
++ boolean isPersisted()
++ void save(DoctorEntity)
++ void load(VaccineEntity)
++ String toString()
++ ShotRecord getShotRecord(Date)
++ boolean requiresMultipleShots()
+}
+
+
+class com.immunet.immunet.entity.OwnerEntity {
+- String name
+- Date dob
+- EntityGender gender
+- String address
+- Integer createdBy
+- UserEntity user
++ UserEntity getUser()
++ void setUser(UserEntity)
++ String getName()
++ void setName(String)
++ Date getDob()
++ void setDob(Date)
++ EntityGender getGender()
++ void setGender(EntityGender)
++ String getAddress()
++ void setAddress(String)
++ Integer getCreatedBy()
++ void setCreatedBy(Integer)
+}
+
+
+class com.immunet.immunet.model.ImmunizationReportFactory {
+~ ImmunizationReportService reportService
++ ImmunizationReport getReport(Pet)
+}
+
+
+class com.immunet.immunet.service.PetService {
+- PetDAO petDAO
++ Integer save(Pet,Integer,Integer)
++ void petCreation(Integer,Owner,Pet,ImmunizationReport)
+}
+
+
+class com.immunet.immunet.dto.PetResponseDTO {
+~ Integer id
+~ String name
+~ String gender
+~ String species
+~ Date dob
+~ CreateOwnerDTO owner
+~ ImmunizationReportDTO report
++ Integer getId()
++ void setId(Integer)
++ String getName()
++ void setName(String)
++ String getGender()
++ void setGender(String)
++ String getSpecies()
++ void setSpecies(String)
++ Date getDob()
++ void setDob(Date)
++ CreateOwnerDTO getOwner()
++ void setOwner(CreateOwnerDTO)
++ ImmunizationReportDTO getReport()
++ void setReport(ImmunizationReportDTO)
+}
+
+
+class com.immunet.immunet.dto.PetResponseDTO$CreateOwnerDTO {
+~ Integer id
+~ String name
+~ String address
++ Integer getId()
++ void setId(Integer)
++ String getName()
++ void setName(String)
++ String getAddress()
++ void setAddress(String)
+}
+
+
+class com.immunet.immunet.dto.VaccineDTO {
+~ Integer id
+~ String name
+~ Integer frequency
+~ Integer offset
+~ List<Integer> intervals
+~ String species
+~ boolean is_default
++ Integer getId()
++ void setId(Integer)
++ String getName()
++ void setName(String)
++ Integer getFrequency()
++ void setFrequency(Integer)
++ Integer getOffset()
++ void setOffset(Integer)
++ List<Integer> getIntervals()
++ void setIntervals(List<Integer>)
++ String getSpecies()
++ void setSpecies(String)
++ boolean isIs_default()
++ void setIs_default(boolean)
+}
+
+
+class com.immunet.immunet.entity.BaseEntity {
+- Integer id
+- Date createdAt
+# void onCreate()
++ Integer getId()
++ Date getCreatedAt()
++ void setCreatedAt(Date)
+}
+
+
+class com.immunet.immunet.entity.ScheduleEntity {
+- Date scheduleDate
+- Date takenDate
+~ Integer petId
+- PetEntity pet
+~ Integer vaccineId
+- VaccineEntity vaccine
+~ Integer doctorId
+- DoctorEntity doctor
+~ Integer createdBy
+- UserEntity user
++ Date getScheduleDate()
++ void setScheduleDate(Date)
++ Date getTakenDate()
++ void setTakenDate(Date)
++ PetEntity getPet()
++ void setPet(PetEntity)
++ VaccineEntity getVaccine()
++ void setVaccine(VaccineEntity)
++ DoctorEntity getDoctor()
++ void setDoctor(DoctorEntity)
++ UserEntity getUser()
++ void setUser(UserEntity)
++ Integer getPetId()
++ void setPetId(Integer)
++ Integer getVaccineId()
++ void setVaccineId(Integer)
++ Integer getDoctorId()
++ void setDoctorId(Integer)
++ Integer getCreatedBy()
++ void setCreatedBy(Integer)
+}
+
+
+class com.immunet.immunet.controllers.VaccinesController {
+~ JpaRepository<DoctorEntity,Integer> doctorRepository
+~ VaccineRepository vaccineRepository
+~ VaccineFactory vaccineFactory
++ Vaccine createVaccines(Integer,CreateVaccineDTO)
++ List<VaccineDTO> getAllVaccines(Integer,String)
+}
+
+
+class com.immunet.immunet.ImmunEtApplication {
++ {static} void main(String[])
+}
+
+interface com.immunet.immunet.repository.ScheduleRepository {
+~ List<ScheduleEntity> findAllByPetId(Integer)
+}
+
+class com.immunet.immunet.entity.UserEntity {
+- String name
+- String contact
+- String password
+- String billingAddress
++ String getName()
++ void setName(String)
++ String getPassword()
++ void setPassword(String)
++ String getContact()
++ void setContact(String)
++ String getBillingAddress()
++ void setBillingAddress(String)
+}
+
+
+abstract class com.immunet.immunet.model.ShotRecord {
++ {abstract}Vaccine getVaccine()
++ {abstract}List<Schedule> getSchedules()
++ {abstract}boolean isComplete()
++ {abstract}List<ShotRecord> getShotDTOs()
++ {abstract}void generateSchedule(Date)
++ {abstract}void addSchedule(Schedule)
+# {abstract}void markComplete(int,Doctor)
+}
+
+class com.immunet.immunet.model.Owner {
+~ Integer id
+~ OwnerService service
++ Integer getId()
++ void save(Integer)
++ boolean isPersisted()
++ void load(OwnerEntity)
+}
+
+
+interface com.immunet.immunet.repository.VaccineRepository {
+~ VaccineEntity findDistinctByNameAndSpeciesAndDoctorId(String,EntitySpecies,Integer)
+~ List<VaccineEntity> findAllByDoctorId(Integer)
+~ List<VaccineEntity> findAllByDoctorIdAndSpecies(Integer,EntitySpecies)
+~ List<VaccineEntity> findAllByDoctorIdAndSpeciesAndIsDefault(Integer,EntitySpecies,boolean)
+}
+
+class com.immunet.immunet.dto.ErrorResponseDTO {
+- HttpStatus status
+- LocalDateTime timeStamp
+- String message
++ HttpStatus getStatus()
++ void setStatus(HttpStatus)
++ LocalDateTime getTimeStamp()
++ void setTimeStamp(LocalDateTime)
++ String getMessage()
++ void setMessage(String)
+}
+
+
+class com.immunet.immunet.model.Person {
+~ String name
+~ String address
++ String getName()
++ void setName(String)
++ String getAddress()
++ void setAddress(String)
+}
+
+
+class com.immunet.immunet.exception.ApplicationExceptionHandler {
++ ResponseEntity<Object> handleBadRequest(HttpServletRequest,BadRequest)
++ ResponseEntity<Object> handleBadRequest(HttpServletRequest,Unauthorized)
++ ResponseEntity<Object> handleConflictRequest(HttpServletRequest,Conflict)
++ ResponseEntity<Object> handleConflictRequest(HttpServletRequest,NotFound)
+- ResponseEntity<Object> buildResponse(ErrorResponseDTO)
+}
+
+class com.immunet.immunet.controllers.DoctorsController {
+~ DoctorRepository doctorRepository
+~ Doctor doctor
++ Doctor createDoctor(CreateDoctorDTO)
++ List<Doctor> getAllDoctors()
+}
+
+
+class com.immunet.immunet.dto.CreateDoctorDTO {
+~ String name
+~ String password
+~ String rePassword
+~ String contact
+~ String address
+~ Double serviceCost
++ String getName()
++ void setName(String)
++ String getPassword()
++ void setPassword(String)
++ String getRePassword()
++ void setRePassword(String)
++ String getContact()
++ void setContact(String)
++ String getAddress()
++ void setAddress(String)
++ Double getServiceCost()
++ void setServiceCost(Double)
+}
+
+
+interface com.immunet.immunet.repository.DoctorRepository {
+}
+enum com.immunet.immunet.entity.EntityStatus {
++  PENDING
++  DELAYED
++  COMPLETE
+}
+
+interface com.immunet.immunet.repository.OwnerRepository {
+~ OwnerEntity findDistinctByNameAndAddress(String,String)
+}
+
+class com.immunet.immunet.service.VaccineService {
+- VaccineDAO vaccineDAO
++ int save(Vaccine,DoctorEntity)
+}
+
+
+class com.immunet.immunet.dto.ImmunizationReportDTO {
+~ String name
+~ Date dob
+~ List<ImmunizationRecordDTO> records
++ String getName()
++ void setName(String)
++ Date getDob()
++ void setDob(Date)
++ List<ImmunizationRecordDTO> getRecords()
++ void setRecords(List<ImmunizationRecordDTO>)
+}
+
+
+class com.immunet.immunet.dto.ImmunizationReportDTO$ScheduleDTO {
+~ Integer id
+~ Date scheduledDate
+~ Date administeredDate
+~ String status
+~ DoctorDTO doctor
++ Integer getId()
++ void setId(Integer)
++ Date getScheduledDate()
++ void setScheduledDate(Date)
++ Date getAdministeredDate()
++ void setAdministeredDate(Date)
++ String getStatus()
++ void setStatus(String)
++ DoctorDTO getDoctor()
++ void setDoctor(DoctorDTO)
+}
+
+
+class com.immunet.immunet.dto.ImmunizationReportDTO$ImmunizationRecordDTO {
+~ Integer vaccineId
+~ String name
+~ String type
+~ List<ScheduleDTO> schedules
++ Integer getVaccineId()
++ void setVaccineId(Integer)
++ String getName()
++ void setName(String)
++ String getType()
++ void setType(String)
++ List<ScheduleDTO> getSchedules()
++ void setSchedules(List<ScheduleDTO>)
+}
+
+
+class com.immunet.immunet.entity.BillEntity {
+- EntityStatus status
+- Double taxPercent
+- PetEntity billFor
+- UserEntity billBy
++ EntityStatus getStatus()
++ void setStatus(EntityStatus)
++ Double getTaxPercent()
++ void setTaxPercent(Double)
++ PetEntity getBillFor()
++ void setBillFor(PetEntity)
++ UserEntity getBillBy()
++ void setCreator(UserEntity)
+}
+
+
+class com.immunet.immunet.model.User {
+~ Integer id
+~ String username
+~ String password
+~ String billingAddress
++ Integer getId()
++ String getBillingAddress()
++ void setBillingAddress(String)
++ String getUsername()
++ void setUsername(String)
++ String getPassword()
++ void setPassword(String)
++ {static} boolean comparePassword(String,String)
++ void load(UserEntity)
+}
+
+
+class com.immunet.immunet.entity.VaccineEntity {
+- String name
+- Integer frequency
+- Integer offset
+- boolean isDefault
+- String intervals
+- EntitySpecies species
+- double cost
+- DoctorEntity doctor
++ DoctorEntity getDoctor()
++ void setDoctor(DoctorEntity)
++ String getName()
++ void setName(String)
++ Integer getFrequency()
++ void setFrequency(Integer)
++ Integer getOffset()
++ void setOffset(Integer)
++ boolean isDefault()
++ void setDefault(boolean)
++ String getIntervals()
++ void setIntervals(String)
++ EntitySpecies getSpecies()
++ void setSpecies(String)
++ double getCost()
++ void setCost(double)
+}
+
+
+class com.immunet.immunet.dao.ScheduleDAO {
+- EntityManager entityManager
++ List<ScheduleEntity> get()
++ ScheduleEntity get(Integer)
++ void save(ScheduleEntity)
++ void delete(Integer)
+}
+
+
+class com.immunet.immunet.exception.Conflict {
+- {static} long serialVersionUID
+- {static} HttpStatus status
++ HttpStatus getStatus()
+}
+
+
+class com.immunet.immunet.dao.OwnerDAO {
+- EntityManager entityManager
++ List<OwnerEntity> get()
++ OwnerEntity get(Integer)
++ void save(OwnerEntity)
++ void delete(Integer)
+}
+
+
+class com.immunet.immunet.controllers.PetsController {
+~ DoctorRepository doctorRepository
+~ PetRepository petRepository
+~ PetService petService
+~ OwnerFactory ownerFactory
+~ PetFactory petFactory
+~ ImmunizationReportFactory immunizationReportFactory
++ List<PetResponseDTO> getAllPets()
++ PetResponseDTO save(Integer,CreatePetDTO)
++ List<BillingItemDTO> getBill()
+- PetResponseDTO getPetCreationResponse(Owner,Pet,ImmunizationReport)
+}
+
+
+class com.immunet.immunet.exception.BadRequest {
+- {static} long serialVersionUID
+- {static} HttpStatus status
++ HttpStatus getStatus()
+}
+
+
+class com.immunet.immunet.dao.VaccineDAO {
+- EntityManager entityManager
++ List<VaccineEntity> get()
++ VaccineEntity get(Integer)
++ void save(VaccineEntity)
++ void delete(Integer)
+}
+
+
+class com.immunet.immunet.dao.PetDAO {
+- EntityManager entityManager
++ List<PetEntity> get()
++ PetEntity get(Integer)
++ void save(PetEntity)
++ void delete(Integer)
+}
+
+
+interface com.immunet.immunet.repository.PetRepository {
+}
+class com.immunet.immunet.entity.DoctorEntity {
+- Double serviceCost
+- UserEntity userDetails
+- String clinicAddress
++ Double getServiceCost()
++ void setServiceCost(Double)
++ String getClinicAddress()
++ void setClinicAddress(String)
++ UserEntity getUserDetails()
++ void setUserDetails(UserEntity)
+}
+
+
+class com.immunet.immunet.dao.UserDAO {
+- EntityManager entityManager
++ List<UserEntity> get()
++ UserEntity get(Integer)
++ void save(UserEntity)
++ void delete(Integer)
+}
+
+
+class com.immunet.immunet.service.ScheduleService {
+- UserDAO userDAO
+- DoctorDAO doctorDAO
++ int save(Doctor)
+}
+
+
+class com.immunet.immunet.controllers.ImmunizationReportsController {
+~ DoctorRepository doctorRepository
+~ PetRepository petRepository
+~ PetService petService
+~ OwnerFactory ownerFactory
+~ PetFactory petFactory
+~ ImmunizationReportFactory immunizationReportFactory
++ ImmunizationReportDTO getPetImmunizations(Integer,Integer)
++ ImmunizationReportDTO administerVaccination(Integer,Integer,Integer)
+- ImmunizationReportDTO getImmunizationReportResponse(Pet,ImmunizationReport)
+}
+
+
+class com.immunet.immunet.model.Pet {
+~ Integer id
+~ String name
+~ Date dob
+~ Gender gender
+~ Species species
+~ Integer creatorID
+~ Integer ownerId
+~ PetService service
++ boolean isPersisted()
++ void save(Integer,Integer)
++ void load(PetEntity)
++ Species getSpecies()
++ void setSpecies(Species)
++ Gender getGender()
++ void setGender(Gender)
++ int getId()
++ void setId(int)
++ String getName()
++ void setName(String)
++ Date getDob()
++ void setDob(Date)
++ Integer getCreatorID()
++ void setCreatorID(Integer)
++ Integer getOwnerId()
++ void setOwnerId(Integer)
+}
+
+
+enum com.immunet.immunet.model.Gender {
++  MALE
++  FEMALE
+}
+
+class com.immunet.immunet.model.Schedule {
+~ Integer id
+~ Date scheduledDate
+~ Date administeredDate
+~ Integer doctorId
+~ Doctor doctor
+~ ImmunizationStatus status
++ Integer getId()
++ void setId(Integer)
++ Date getScheduledDate()
++ void setScheduledDate(Date)
++ Date getAdministeredDate()
++ void setAdministeredDate(Date)
++ ImmunizationStatus getStatus()
++ void setStatus(ImmunizationStatus)
++ Integer getDoctorId()
+- void updateStatus()
++ boolean isDelayed()
++ boolean isComplete()
++ void markComplete(Doctor)
++ {static} Schedule load(ScheduleEntity)
+- void setDoctorId(Integer)
++ Doctor getDoctor()
++ void setDoctor(Doctor)
+}
+
+
+enum com.immunet.immunet.model.ImmunizationStatus {
++  PENDING
++  DELAYED
++  COMPLETE
+}
+
+class com.immunet.immunet.service.DoctorService {
+- UserDAO userDAO
+- DoctorDAO doctorDAO
++ int save(Doctor)
+}
+
+
+class com.immunet.immunet.entity.BillItemEntity {
+- Double cost
+- String name
+- String type
+- BillEntity bill
+- DoctorEntity doctor
++ Double getCost()
++ void setCost(Double)
++ String getName()
++ void setName(String)
++ String getType()
++ void setType(String)
++ BillEntity getBill()
++ void setBill(BillEntity)
++ DoctorEntity getDoctor()
++ void setDoctor(DoctorEntity)
+}
+
+
+class com.immunet.immunet.dao.DoctorDAO {
+- EntityManager entityManager
++ List<DoctorEntity> get()
++ DoctorEntity get(Integer)
++ void save(DoctorEntity)
++ void delete(Integer)
+}
+
+
+enum com.immunet.immunet.model.Species {
++  CANINE
++  FELINE
++  AVIAN
+}
+
+class com.immunet.immunet.service.OwnerService {
+- OwnerDAO ownerDAO
+- OwnerRepository ownerRepository
++ int save(Owner,Integer)
++ OwnerEntity getExistingOwner(String,String)
+}
+
+
+class com.immunet.immunet.controllers.SpeciesController {
++ List<String> getAllSpecies()
+}
+
+class com.immunet.immunet.dto.CreatePetDTO {
+~ String name
+~ String gender
+~ String species
+~ Date dob
+~ CreateOwnerDTO owner
++ String getName()
++ void setName(String)
++ String getGender()
++ void setGender(String)
++ String getSpecies()
++ void setSpecies(String)
++ Date getDob()
++ void setDob(Date)
++ CreateOwnerDTO getOwner()
++ void setOwner(CreateOwnerDTO)
+}
+
+
+class com.immunet.immunet.dto.CreatePetDTO$CreateOwnerDTO {
+~ String name
+~ String address
++ String getName()
++ void setName(String)
++ String getAddress()
++ void setAddress(String)
+}
+
+
+class com.immunet.immunet.entity.PetEntity {
+- String name
+- Date dob
+- EntityGender gender
+- EntitySpecies species
+~ Integer ownerId
+- OwnerEntity owner
+~ Integer createdBy
+- UserEntity creator
++ String getName()
++ void setName(String)
++ Date getDob()
++ void setDob(Date)
++ EntityGender getGender()
++ void setGender(EntityGender)
++ EntitySpecies getSpecies()
++ void setSpecies(EntitySpecies)
++ OwnerEntity getOwner()
++ void setOwner(OwnerEntity)
++ UserEntity getCreator()
++ void setCreator(UserEntity)
++ Integer getOwnerId()
++ void setOwnerId(Integer)
++ Integer getCreatedBy()
++ void setCreatedBy(Integer)
+}
+
+
+class com.immunet.immunet.model.OwnerFactory {
+~ OwnerService service
++ Owner getOwner(String,String)
++ Owner getOwner(OwnerEntity)
+}
+
+
+class com.immunet.immunet.model.SingleShotRecord {
+- Vaccine vaccine
+- Schedule schedule
++ void setSchedule(Schedule)
++ boolean isComplete()
++ void generateSchedule(Date)
++ void markComplete(int,Doctor)
++ List<ShotRecord> getShotDTOs()
++ Vaccine getVaccine()
++ Schedule getSchedule()
++ List<Schedule> getSchedules()
++ void addSchedule(Schedule)
+}
+
+
+class com.immunet.immunet.dto.DoctorDTO {
+~ String name
+~ Integer id
+~ String clinicAddress
++ String getName()
++ void setName(String)
++ Integer getId()
++ void setId(Integer)
++ String getClinicAddress()
++ void setClinicAddress(String)
+}
+
+
+class com.immunet.immunet.exception.Unauthorized {
+- {static} long serialVersionUID
+- {static} HttpStatus status
++ HttpStatus getStatus()
+}
+
+
+
+
+com.immunet.immunet.exception.Exception <|-- com.immunet.immunet.exception.NotFound
+com.immunet.immunet.model.User <|-- com.immunet.immunet.model.Doctor
+com.immunet.immunet.model.ShotRecord <|-- com.immunet.immunet.model.MultiShotRecord
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.OwnerEntity
+com.immunet.immunet.dto.PetResponseDTO +.. com.immunet.immunet.dto.PetResponseDTO$CreateOwnerDTO
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.ScheduleEntity
+org.springframework.data.jpa.repository.JpaRepository <|-- com.immunet.immunet.repository.ScheduleRepository
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.UserEntity
+com.immunet.immunet.model.Person <|-- com.immunet.immunet.model.Owner
+org.springframework.data.jpa.repository.JpaRepository <|-- com.immunet.immunet.repository.VaccineRepository
+org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler <|-- com.immunet.immunet.exception.ApplicationExceptionHandler
+org.springframework.data.jpa.repository.JpaRepository <|-- com.immunet.immunet.repository.DoctorRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.immunet.immunet.repository.OwnerRepository
+com.immunet.immunet.dto.ImmunizationReportDTO +.. com.immunet.immunet.dto.ImmunizationReportDTO$ScheduleDTO
+com.immunet.immunet.dto.ImmunizationReportDTO +.. com.immunet.immunet.dto.ImmunizationReportDTO$ImmunizationRecordDTO
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.BillEntity
+com.immunet.immunet.model.Person <|-- com.immunet.immunet.model.User
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.VaccineEntity
+com.immunet.immunet.dao.EntityDAO <|.. com.immunet.immunet.dao.ScheduleDAO
+com.immunet.immunet.exception.Exception <|-- com.immunet.immunet.exception.Conflict
+com.immunet.immunet.dao.EntityDAO <|.. com.immunet.immunet.dao.OwnerDAO
+com.immunet.immunet.exception.Exception <|-- com.immunet.immunet.exception.BadRequest
+com.immunet.immunet.dao.EntityDAO <|.. com.immunet.immunet.dao.VaccineDAO
+com.immunet.immunet.dao.EntityDAO <|.. com.immunet.immunet.dao.PetDAO
+org.springframework.data.jpa.repository.JpaRepository <|-- com.immunet.immunet.repository.PetRepository
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.DoctorEntity
+com.immunet.immunet.dao.EntityDAO <|.. com.immunet.immunet.dao.UserDAO
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.BillItemEntity
+com.immunet.immunet.dao.EntityDAO <|.. com.immunet.immunet.dao.DoctorDAO
+com.immunet.immunet.dto.CreatePetDTO +.. com.immunet.immunet.dto.CreatePetDTO$CreateOwnerDTO
+com.immunet.immunet.entity.BaseEntity <|-- com.immunet.immunet.entity.PetEntity
+com.immunet.immunet.model.ShotRecord <|-- com.immunet.immunet.model.SingleShotRecord
+com.immunet.immunet.exception.Exception <|-- com.immunet.immunet.exception.Unauthorized
+@enduml
