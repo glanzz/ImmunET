@@ -27,8 +27,6 @@ public class DoctorsController {
 	
 	@PostMapping("/doctors")
 	public Doctor createDoctor(@Validated @RequestBody CreateDoctorDTO doctorData) throws BadRequest {
-		System.out.println(doctorData.getPassword());
-		System.out.println(doctorData.getRePassword());
 		if (User.comparePassword(doctorData.getPassword(), doctorData.getRePassword()) == false) {
 			throw new BadRequest("Passwords do not match !");
 		}
