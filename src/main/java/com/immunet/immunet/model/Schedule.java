@@ -10,6 +10,10 @@ public class Schedule {
 	Date scheduledDate;
 	 //static Date scheduledDate= new Date(124, 02, 03 );
 	Date administeredDate;
+        
+        /**
+        * Enum for tracking the status of immunization: whether it's pending, delayed, or complete.
+        */
 	public static enum ImmunizationStatus {
 		PENDING,
 		DELAYED,
@@ -23,6 +27,12 @@ public class Schedule {
 		
 	}
 	
+        /**
+        * Constructor to create a schedule with defined scheduled and administered dates.
+        * Automatically updates the status based on these dates.
+        * @param scheduledDate The planned date for the immunization.
+        * @param administeredDate The actual date the immunization was administered.
+        */
 	public Schedule(Date scheduledDate, Date administeredDate) {
 		this.scheduledDate = scheduledDate;
 		this.administeredDate = administeredDate;
@@ -67,6 +77,9 @@ public class Schedule {
 		return this.doctorId;
 	}
 	
+        /**
+        * Updates the status of the immunization based on the current date and the scheduled and administered dates.
+        */
 	private void updateStatus() {
 		/*
 		 * Is adminDate present => completed
@@ -97,6 +110,11 @@ public class Schedule {
 	}
 		
 
+        /**
+        * Marks the immunization as complete and assigns the doctor who administered it. Throws an exception if already complete.
+        * @param doctor The doctor administering the immunization.
+        * @throws BadRequest if the schedule is already marked as complete.
+        */
 	public void markComplete(Doctor d) throws BadRequest {
 		Date todayDate= new Date();
 		if (isComplete()) {
@@ -107,6 +125,11 @@ public class Schedule {
 		}	
 	}
 	
+        /**
+        * Loads schedule data from a database entity.
+        * @param s The ScheduleEntity instance containing the data.
+        * @return The Schedule instance populated with data from the entity.
+        */
 	public static Schedule load(ScheduleEntity s) {
 		Schedule schedule = new Schedule();
 		schedule.id = s.getId();
