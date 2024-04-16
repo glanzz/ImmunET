@@ -31,6 +31,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,7 +60,7 @@ public class ImmunizationReportsController {
 	ImmunizationReportFactory immunizationReportFactory;
 	
 	
-
+	@CrossOrigin
 	@GetMapping("/doctors/{doctorId}/pets/{petId}/immunizations")
 	public ImmunizationReportDTO getPetImmunizations(@PathVariable Integer doctorId, @PathVariable Integer petId) throws Unauthorized, NotFound, BadRequest {
 		// Validate access
@@ -76,6 +77,7 @@ public class ImmunizationReportsController {
 		return getImmunizationReportResponse(reportFor, report);
 	}
 	
+	@CrossOrigin
 	@PostMapping("/doctors/{doctorId}/pets/{petId}/schedules/{scheduleId}")
 	public ImmunizationReportDTO administerVaccination(@PathVariable Integer doctorId, @PathVariable Integer petId, @PathVariable Integer scheduleId) throws BadRequest, Unauthorized, Conflict, NotFound {
 		// Validate access

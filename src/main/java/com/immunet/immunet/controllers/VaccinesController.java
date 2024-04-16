@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,7 @@ public class VaccinesController {
 	VaccineFactory vaccineFactory;
 	
 	
-	
+	@CrossOrigin
 	@PostMapping("/doctors/{doctorId}/vaccines")
 	public Vaccine createVaccines(@PathVariable Integer doctorId, @Validated @RequestBody CreateVaccineDTO vaccineData) throws BadRequest, Unauthorized, Conflict {
 		Optional<DoctorEntity> doctor = doctorRepository.findById(doctorId);
@@ -77,6 +78,7 @@ public class VaccinesController {
 		return vaccine;
 	}
 	
+	@CrossOrigin
 	@GetMapping("/doctors/{doctorId}/vaccines")
 	public List<VaccineDTO> getAllVaccines(@PathVariable Integer doctorId, @RequestParam("species") String species) throws BadRequest, Unauthorized {
 		Optional<DoctorEntity> doctor = doctorRepository.findById(doctorId);

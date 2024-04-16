@@ -29,6 +29,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +58,7 @@ public class PetsController {
 	ImmunizationReportFactory immunizationReportFactory;
 	
 	
-
+	@CrossOrigin
 	@GetMapping("/pets")
 	public List<PetResponseDTO> getAllPets() {
 		List<PetEntity> pets = petRepository.findAll();
@@ -76,6 +77,7 @@ public class PetsController {
 		return petsDetails;
 	}
 	
+	@CrossOrigin
 	@PostMapping("/doctors/{doctorId}/pets")
 	public PetResponseDTO save(@PathVariable Integer doctorId, @Validated @RequestBody CreatePetDTO petData) throws BadRequest, Unauthorized, Conflict {
 		// Validate access
@@ -126,6 +128,7 @@ public class PetsController {
 	}
 	
 
+	@CrossOrigin
 	@GetMapping("/bills")
 	public List<BillingItemDTO> getBill() {
 		List<BillingItemDTO> bill = new ArrayList<BillingItemDTO>();
