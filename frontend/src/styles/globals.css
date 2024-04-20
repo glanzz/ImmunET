@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@300;400&display=swap");
+
+:root {
+  --custom_button_color: #e25e3e;
+  --custom_button_hover_color: #f78467;
+  --primary-colour: #00b0ff;
+  --secondary-colour: #00a79d;
+  --third-colour: #ffa958;
+
+  --fourth-blue-colour: #529de4;
+  --fifth-green-colour: #45b854;
+  --bold-text-colour: #424e79;
+}
+
+.example::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.react-calendar {
+  width: 100% !important;
+}
+.ck-editor__editable {
+  min-height: 200px !important;
+}
