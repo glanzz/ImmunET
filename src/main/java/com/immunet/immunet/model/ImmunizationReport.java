@@ -83,7 +83,7 @@ public class ImmunizationReport {
      * @throws BadRequest if a record for the vaccine already exists
      */
     public void addShotRecord(Vaccine vaccine) throws BadRequest {
-        // Exception hendling
+        // Exception handling
         if (shotRecordExists(vaccine)) {
             throw new BadRequest("Shot record for vaccine " + vaccine.getName() + " already exists.");
         }
