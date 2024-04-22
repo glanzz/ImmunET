@@ -15,6 +15,7 @@ import com.immunet.immunet.exception.NotFound;
 public class MultiShotRecord extends ShotRecord {
     private Vaccine vaccine;
     private List<Schedule> schedules;
+    // Contructor overloading
 
     /**
      * Constructs a new MultiShotRecord with a specified vaccine and date of birth.
@@ -134,5 +135,5 @@ public class MultiShotRecord extends ShotRecord {
         return null;
     }
 
-    // Additional methods and properties may exist but are omitted for brevity.
+
 }

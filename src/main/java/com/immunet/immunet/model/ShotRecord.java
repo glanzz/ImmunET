@@ -12,7 +12,7 @@ import java.util.List;
 import com.immunet.immunet.entity.ScheduleEntity;
 import com.immunet.immunet.exception.BadRequest;
 import com.immunet.immunet.exception.NotFound;
-
+    /** Abstract Class */
 public abstract class ShotRecord {
 
     /**

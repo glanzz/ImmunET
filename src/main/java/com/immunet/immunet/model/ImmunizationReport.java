@@ -16,6 +16,7 @@ import com.immunet.immunet.service.ImmunizationReportService;
 import java.util.Objects;
 
 public class ImmunizationReport {
+    // API design - No single and multishot record
     private List<ShotRecord> shotRecords;
     private Pet pet;
     private ImmunizationReportService service;
@@ -82,6 +83,7 @@ public class ImmunizationReport {
      * @throws BadRequest if a record for the vaccine already exists
      */
     public void addShotRecord(Vaccine vaccine) throws BadRequest {
+        // Exception hendling
         if (shotRecordExists(vaccine)) {
             throw new BadRequest("Shot record for vaccine " + vaccine.getName() + " already exists.");
         }
@@ -136,6 +138,7 @@ public class ImmunizationReport {
      * @return a list of completed shot records
      */
     public List<ShotRecord> getCompletedShotsTillDate() {
+        // Method reference
         return shotRecords.stream()
             .filter(ShotRecord::isComplete)
             .collect(Collectors.toList());
@@ -147,6 +150,7 @@ public class ImmunizationReport {
      * @return a list of shot records scheduled for today
      */
     public List<ShotRecord> getTodaysShots() {
+        // Streams usage
         Date today = new Date(); // Today's date
         return shotRecords.stream().filter(record -> {
             return record.getSchedules().stream().anyMatch(schedule -> schedule.getScheduledDate().equals(today));

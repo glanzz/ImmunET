@@ -52,6 +52,7 @@ public class ShotFactory {
      * @return a {@code ShotRecord} that is either a {@code SingleShotRecord} or a {@code MultiShotRecord}, depending on the vaccine
      */
     public ShotRecord getShotRecord(Vaccine v) {
+        // Factory method to determine shot
         if (v.requiresMultipleShots()) {
             return new MultiShotRecord(v);
         } else {

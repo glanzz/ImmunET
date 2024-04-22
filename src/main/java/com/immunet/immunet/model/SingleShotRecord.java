@@ -143,5 +143,5 @@ public class SingleShotRecord extends ShotRecord {
         return null;
     }
 
-    // Additional private helpers or properties may exist but are not documented here.
+    
 }
