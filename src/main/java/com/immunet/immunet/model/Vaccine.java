@@ -130,14 +130,20 @@ public class Vaccine {
 
 	public static List<Integer> parseIntervals(String intervalsCSV) throws BadRequest {
 		try {
-			List<String> intervals = Arrays.asList(intervalsCSV.split(","));
 			List<Integer> parsedIntervals = new ArrayList<Integer>();
-			intervals.stream().forEach((a) -> {parsedIntervals.add(Integer.parseInt(a));});
+			if (intervalsCSV.compareTo("") != 0) { // Handle empty csv
+				List<String> intervals = Arrays.asList(intervalsCSV.split(","));
+				if (intervals.size() > 0) {
+					intervals.stream().forEach((a) -> {
+						parsedIntervals.add(Integer.parseInt(a));
+					});
+				}
+			}
 			return parsedIntervals;
 			
 		}
 		catch(NumberFormatException e) {
-			throw new BadRequest("Intervals data given !");
+			throw new BadRequest("Invalid intervals data given !");
 		}
 		
 	}
@@ -160,6 +166,7 @@ public class Vaccine {
 	
 	
 	public void load(VaccineEntity vaccine) throws BadRequest {
+		System.out.println(vaccine.getId());
 		this.id = vaccine.getId();
 		this.setCost(vaccine.getCost());
 		this.setDefaultVaccine(vaccine.isDefault());
