@@ -120,7 +120,7 @@ public class ImmunizationReportDTO {
 	@NotNull
 	String name;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	Date dob;
 	
 	public String getName() {
