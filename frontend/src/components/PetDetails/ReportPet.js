@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export default function ReportPet({ pet }) {
+  const [records, setRecords] = useState(pet?.report?.records || []);
   const [completedSchedules, setCompletedSchedules] = useState([]);
   const [loading, setLoading] = useState(false);
   const markAsComplete = async (scheduleId) => {
@@ -19,6 +20,8 @@ export default function ReportPet({ pet }) {
       if (!response.ok) {
         throw new Error("Failed to mark schedule as complete");
       }
+      const data = await response.json();
+      setRecords([...data?.records]);
       // Update completedSchedules state to reflect the change
       setCompletedSchedules([...completedSchedules, scheduleId]);
       setLoading(false);
@@ -64,64 +67,68 @@ export default function ReportPet({ pet }) {
                     </p>
                   ) : (
                     <>
-                      {pet?.report?.records[0]?.schedules?.map((data) => (
-                        <tr key={data.id}>
-                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <div className="flex">
-                              <div className="ml-3">
+                      {records.map((record) => {
+                        return record.schedules.map((data, index) => (
+                          <tr key={data.id}>
+                            {index == 0 && (
+                              <td
+                                className="px-5 py-5 border-b border-gray-200 bg-white text-sm"
+                                rowSpan={record.schedules.length}
+                              >
+                                <div className="flex">
+                                  <div className="ml-3">
+                                    <p className="text-gray-900 whitespace-no-wrap">
+                                      {record?.name}
+                                    </p>
+                                  </div>
+                                </div>
+                              </td>
+                            )}
+                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <p
+                                className={`whitespace-no-wrap ${
+                                  data.status !== "PENDING" ? "text-green-500" : "text-red-500"
+                                }`}
+                              >
+                                {data.status}
+                              </p>
+                            </td>
+                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <div>
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                  {pet?.report?.records[0]?.name}
+                                  {new Date(data.scheduledDate).toLocaleDateString()}
                                 </p>
                               </div>
-                            </div>
-                          </td>
-                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p
-                              className={`whitespace-no-wrap ${
-                                data.status !== "PENDING"
-                                  ? "text-green-500"
-                                  : "text-red-500"
-                              }`}
-                            >
-                              {data.status}
-                            </p>
-                          </td>
-                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <div>
-                              <p className="text-gray-900 whitespace-no-wrap">
-                                {new Date(
-                                  data.scheduledDate
-                                ).toLocaleDateString()}
-                              </p>
-                            </div>
-                          </td>
-                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <div>
-                              {data.administeredDate ? (
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {new Date(
-                                    data.administeredDate
-                                  ).toLocaleDateString()}
-                                </p>
-                              ) : (
-                                <p></p>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <div>
-                              {!completedSchedules.includes(data.id) && (
-                                <button
-                                  className="text-white p-2 bg-gray-500 rounded-md whitespace-no-wrap"
-                                  onClick={() => markAsComplete(data.id)}
-                                >
-                                  Mark As Complete
-                                </button>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
+                            </td>
+                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <div>
+                                {data.administeredDate ? (
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {new Date(data.administeredDate).toLocaleDateString()}
+                                  </p>
+                                ) : (
+                                  <p></p>
+                                )}
+                              </div>
+                            </td>
+                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <div>
+                                {!data.administeredDate ? (
+                                  <button
+                                    className="text-white p-2 bg-gray-500 rounded-md whitespace-no-wrap"
+                                    onClick={() => markAsComplete(data.id)}
+                                  >
+                                    Mark As Complete
+                                  </button>
+                                ) : (
+                                  <div>{data?.doctor?.name}</div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ));
+                      })}
+                      {/*pet?.report?.records[0]?.schedules?.map()*/}
                     </>
                   )}
                 </tbody>

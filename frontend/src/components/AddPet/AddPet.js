@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddPet = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +27,9 @@ const AddPet = () => {
         },
       }));
     } else {
+      if (name == "dob") {
+        console.log(value);
+      }
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -37,10 +40,6 @@ const AddPet = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let data = { ...formData };
-      if (!data.intervals) {
-        data.intervals = ",";
-      }
       const response = await fetch(`${process.env.SERVER_API}/doctors/1/pets`, {
         method: "POST",
         headers: {
@@ -48,8 +47,21 @@ const AddPet = () => {
         },
         body: JSON.stringify(formData),
       });
+      console.log(response.ok);
       if (response.ok) {
         toast.success("Pet added successfully!");
+        setFormData({
+          name: "",
+          gender: "",
+          species: "",
+          dob: "",
+          owner: {
+            name: "",
+            gender: "",
+            contact: "",
+            address: "",
+          },
+        });
       } else {
         toast.error("Failed to add pet. Please try again later.");
       }
@@ -62,6 +74,7 @@ const AddPet = () => {
   return (
     <div className="">
       {/* top section design */}
+      <ToastContainer />
       <div className="flex sm:gap-6 gap-6 items-center sm:mb-0 mb-4 px-4 pb-5 mt-5">
         <div className="sm:mr-0 mr-4">
           <h2 className="font-bold sm:text-lg text-sm uppercase text-bold_text_colour"> ADD PET</h2>
