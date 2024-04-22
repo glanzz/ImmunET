@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 /**
- *
- * @author HP
+ * Represents a single-shot vaccination record for a patient within the Immunet system. 
+ * This class extends {@code ShotRecord}, specifically designed for vaccines that require 
+ * only a single administration. It manages scheduling and tracking the completion of the vaccination.
  */
 package com.immunet.immunet.model;
 
@@ -21,84 +17,131 @@ public class SingleShotRecord extends ShotRecord {
     private Vaccine vaccine;
     private Schedule schedule;
 
+    /**
+     * Constructs a SingleShotRecord with the specified vaccine and the date of birth of the patient.
+     * It initializes the record and automatically generates a vaccination schedule based on the patient's date of birth.
+     *
+     * @param vaccine the vaccine to be administered
+     * @param dob the date of birth of the patient, used to calculate the schedule
+     */
     public SingleShotRecord(Vaccine vaccine, Date dob) {
         this.vaccine = vaccine;
         this.generateSchedule(dob);
     }
-    
+
+    /**
+     * Constructs a SingleShotRecord with the specified vaccine. This constructor does not automatically
+     * generate a schedule.
+     *
+     * @param vaccine the vaccine to be administered
+     */
     public SingleShotRecord(Vaccine vaccine) {
         this.vaccine = vaccine;
     }
-    
-    public void setSchedule(Schedule s) {
-    	this.schedule = s;
-    }
-  
 
+    /**
+     * Sets the schedule for this vaccination record.
+     *
+     * @param s the schedule to set
+     */
+    public void setSchedule(Schedule s) {
+        this.schedule = s;
+    }
+
+    /**
+     * Determines if the vaccination schedule is complete.
+     *
+     * @return boolean indicating whether the schedule is complete
+     */
     @Override
     public boolean isComplete() {
         return this.schedule != null && this.schedule.isComplete();
     }
 
-//    @Override
-//    public List<ShotRecord> getShotDTOs() {
-//        return this.schedule != null ? 
-//               Collections.singletonList(new ShotDTO(vaccine, schedule)) : 
-//               Collections.emptyList();
-//    }
-
+    /**
+     * Generates a vaccination schedule based on the date of birth of the patient.
+     * This method calculates the scheduled vaccination date by adding the offset provided by the vaccine to the patient's date of birth.
+     *
+     * @param dob the date of birth of the patient
+     */
     @Override
     public void generateSchedule(Date dob) {
-        // Create a calendar instance starting at the pet's date of birth
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dob);
-
-        // Apply the offset from the vaccine to the date of birth
         calendar.add(Calendar.DAY_OF_YEAR, vaccine.getOffset());
-
-        // Create the schedule and set the scheduled date
+        
         this.schedule = new Schedule();
         this.schedule.setScheduledDate(calendar.getTime());
-
     }
 
+    /**
+     * Marks the vaccination schedule as complete if the specified schedule ID matches the current schedule.
+     * Throws an exception if the schedule ID does not match or the schedule is null.
+     *
+     * @param scheduleId the ID of the schedule to be marked complete
+     * @param doctor the doctor responsible for marking the schedule complete
+     * @throws NotFound if the schedule with the given ID is not found
+     * @throws BadRequest if there are issues marking the schedule as complete
+     */
     public void markComplete(int scheduleId, Doctor doctor) throws NotFound, BadRequest {
-        if (this.schedule != null && schedule.getId().equals(scheduleId)) {
+        if (this.schedule != null && this.schedule.getId().equals(scheduleId)) {
             this.schedule.markComplete(doctor);
         } else {
-        	throw new NotFound("Schedule not found !");
+            throw new NotFound("Schedule not found !");
         }
     }
 
-	@Override
-	public List<ShotRecord> getShotDTOs() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /**
+     * Retrieves the vaccine associated with this vaccination record.
+     *
+     * @return the associated vaccine
+     */
+    @Override
+    public Vaccine getVaccine() {
+        return this.vaccine;
+    }
 
-	@Override
-	public Vaccine getVaccine() {
-		// TODO Auto-generated method stub
-		return this.vaccine;
-	}
+    /**
+     * Retrieves the current schedule associated with this vaccination record.
+     *
+     * @return the current schedule, or null if no schedule is set
+     */
+    public Schedule getSchedule() {
+        return this.schedule;
+    }
 
-	
-	public Schedule getSchedule() {
-		// TODO Auto-generated method stub
-		return this.schedule;
-	}
-	
-	public List<Schedule> getSchedules() {
-		List<Schedule> schedules = new ArrayList<Schedule>();
-		schedules.add(getSchedule());
-		return schedules;
-	}
+    /**
+     * Retrieves a list of schedules associated with this vaccination record. 
+     * For a single-shot record, this method will typically return a list containing only one schedule.
+     *
+     * @return a list of schedules, which may contain only one schedule
+     */
+    public List<Schedule> getSchedules() {
+        List<Schedule> schedules = new ArrayList<>();
+        schedules.add(getSchedule());
+        return schedules;
+    }
 
-	@Override
-	public void addSchedule(Schedule s) {
-		this.setSchedule(s);
-		
-	}
+    /**
+     * Adds a new schedule to this vaccination record. This will overwrite any existing schedule.
+     *
+     * @param s the schedule to add
+     */
+    @Override
+    public void addSchedule(Schedule s) {
+        this.setSchedule(s);
+    }
 
-    // Getters and setters omitted for brevity
+    /**
+     * Unused method from superclass, meant to return a list of ShotDTOs. Currently not implemented and returns null.
+     *
+     * @return null as the method is not implemented
+     */
+    @Override
+    public List<ShotRecord> getShotDTOs() {
+        // Implementation is required if method is to be used.
+        return null;
+    }
+
+    // Additional private helpers or properties may exist but are not documented here.
 }
