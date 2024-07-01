@@ -1,5 +1,7 @@
 # ImmunET
 
+Alternative to Daycare project
+
 Pet Immunization Record Application
 
 
